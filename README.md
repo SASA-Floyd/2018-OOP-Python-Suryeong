@@ -2,9 +2,9 @@
 구성원: 2-2 최정담 | 2-2 황서영 | 2-1 정려빈
 
 ## 1. 주제
-Project Namu
-SASA Extension
-또 하나 뭐였더라
+Project Namu  
+SASA Extension    
+Test  
 
 ## 2. 동기
 꿀잼각
