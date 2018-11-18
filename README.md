@@ -27,9 +27,9 @@ Blue Brick
 time, socket, pygame, threading
 
 ## 8. **분업 계획**
-정려빈: socket
-최정담: pygame을 이용한 gui
-황서영: 게임 핵심 기능 구현
+정려빈: socket   
+최정담: pygame을 이용한 gui   
+황서영: 게임 핵심 기능 구현   
 
 ## 9. 기타
 
