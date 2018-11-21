@@ -1,5 +1,7 @@
 import threading
 import socket
+import random
+import time
 
 # Server setting
 myIp = '127.0.0.1'
@@ -18,14 +20,37 @@ server_sock.listen()
 clientList = []
 client_id = []
 
+# "Item name": Available Number
+item_dict = {
+    "빨간 벽돌": 6,
+    "파란 벽돌": 1,
+    "나무 합판": 3,
+    "철근": 2,
+    "시멘트": 3,
+    "수령님의 평양냉면": 1
+}
+
 print("********BLUE BRICK********")
 print("Waiting for players...({}/4)".format(len(clientList)))
 
 
 # 서버로부터 메시지를 받는 함수 | Thread 활용
 def receive(client_sock):
-    global clientList  # 받은 메시지를 다른 클라이언트들에게 전송하고자 변수를 가져온다.
-    while True:
+    global client_list  # 받은 메시지를 다른 클라이언트들에게 전송하고자 변수를 가져온다.
+
+    # 딕셔녀리에 물품이 남아있다면
+    while item_dict:
+        # 이번 라운드 경매 물품을 소개한다
+        item = random.choice(list(item_dict.keys()))
+        item_dict[item] -= 1
+        # 물품 잔고가 없다면 딕셔너리에서 삭제
+        if item_dict[item] == 0:
+            del item_dict[item]
+        for sock in client_list:
+            sock.send(bytes("이번 경매 물품은 " + item + "입니다.", 'utf-8'))
+            time.sleep(2)
+            sock.send(bytes("경매를 시작합니다"))
+
         # 클라이언트로부터 데이터를 받는다.
         try:
             data = client_sock.recv(1024)
@@ -45,6 +70,30 @@ def receive(client_sock):
         for sock in clientList:
             if sock != client_sock:
                 sock.send(data_with_id)
+
+        # 수령: 3초 세기
+
+        # 3초가 지났는데 다른 구매자가 없으면 물품을 구입
+        three_seconds_passed = False
+        if three_seconds_passed:
+            client_sock.send(bytes(item + "을(를) 구입했습니다."))
+
+        # 나머지 사람들에게 물품이 구입되었다고 공지
+        for sock in client_list:
+            if sock != client_sock:
+                sock.send(bytes(str(client_sock.fileno()) +
+                                "이(가) " + item + "을(를) 구입했습니다."), 'utf-8')
+
+        success = client_sock.recv(1024)
+        if success:
+            for sock in client_list:
+                if sock != client_sock:
+                    sock.send(bytes(str(client_sock.fileno()) +
+                                    "이(가) 집을 지었습니다!"), 'utf-8')
+            client_sock.send(bytes("집을 짓는데 성공했습니다!"), 'utf-8')
+            break
+
+    client_sock.send(bytes("아무도 집을 짓지 못했습니다."), 'utf-8')
 
     # 메시지 송발신이 끝났으므로, 대상인 client는 목록에서 삭제.
     client_id.remove(client_sock.fileno())
@@ -83,7 +132,6 @@ def connection():
 
     # 네 명이 모이면 게임 시작
     print("Game Started!")
-    print("First letter starts with 'a'")
 
 
 # 연결 수립용 스레드 생성 및 실행.
