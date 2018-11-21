@@ -2,9 +2,9 @@ import threading
 import socket
 
 # Server setting
-myip = '127.0.0.1'
-myport = 50000
-address = (myip, myport)
+myIp = '127.0.0.1'
+myPort = 50000
+address = (myIp, myPort)
 
 # Create socket
 server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -15,16 +15,16 @@ server_sock.bind(address)
 # Listen
 server_sock.listen()
 
-client_list = []
+clientList = []
 client_id = []
 
 print("********BLUE BRICK********")
-print("Waiting for players...({}/4)".format(len(client_list)))
+print("Waiting for players...({}/4)".format(len(clientList)))
 
 
 # 서버로부터 메시지를 받는 함수 | Thread 활용
 def receive(client_sock):
-    global client_list  # 받은 메시지를 다른 클라이언트들에게 전송하고자 변수를 가져온다.
+    global clientList  # 받은 메시지를 다른 클라이언트들에게 전송하고자 변수를 가져온다.
     while True:
         # 클라이언트로부터 데이터를 받는다.
         try:
@@ -42,13 +42,13 @@ def receive(client_sock):
 
         # 데이터가 들어왔다면 접속하고 있는 모든 클라이언트에게 메시지 전송
         data_with_id = bytes(str(client_sock.fileno()), 'utf-8') + b":"+data
-        for sock in client_list:
+        for sock in clientList:
             if sock != client_sock:
                 sock.send(data_with_id)
 
     # 메시지 송발신이 끝났으므로, 대상인 client는 목록에서 삭제.
     client_id.remove(client_sock.fileno())
-    client_list.remove(client_sock)
+    clientList.remove(client_sock)
     print("Currently connected users: {}\n".format(client_id), end='')
     # 삭제 후 sock 닫기
     client_sock.close()
@@ -59,16 +59,16 @@ def receive(client_sock):
 
 def connection():
     global client_id
-    global client_list
+    global clientList
 
-    while len(client_list) < 4:
+    while len(clientList) < 4:
          # 클라이언트들이 접속하기를 기다렸다가, 연결을 수립함.
         client_sock, client_addr = server_sock.accept()
 
         # 연결된 정보를 가져와서 list에 저장함.
         # 몇 번째 플레이어인지 알려주기 (먼저 접속한 사람이 먼저 시작)
-        client_sock.send(bytes(str(len(client_list)), 'utf-8'))
-        client_list.append(client_sock)
+        client_sock.send(bytes(str(len(clientList)), 'utf-8'))
+        clientList.append(client_sock)
         client_id.append(client_sock.fileno())
 
         print("{} connected.".format(client_sock.fileno()))
@@ -78,8 +78,8 @@ def connection():
         thread_recv = threading.Thread(target=receive, args=(client_sock, ))
         thread_recv.start()
 
-        if len(client_list) < 4:
-            print("Waiting for players...({}/4)".format(len(client_list)))
+        if len(clientList) < 4:
+            print("Waiting for players...({}/4)".format(len(clientList)))
 
     # 네 명이 모이면 게임 시작
     print("Game Started!")
