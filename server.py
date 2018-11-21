@@ -81,8 +81,19 @@ def receive(client_sock):
         # 나머지 사람들에게 물품이 구입되었다고 공지
         for sock in client_list:
             if sock != client_sock:
-                sock.send(str(client_sock.fileno()) +
-                          "이(가) " + item + "을(를) 구입했습니다.")
+                sock.send(bytes(str(client_sock.fileno()) +
+                                "이(가) " + item + "을(를) 구입했습니다."), 'utf-8')
+
+        success = client_sock.recv(1024)
+        if success:
+            for sock in client_list:
+                if sock != client_sock:
+                    sock.send(bytes(str(client_sock.fileno()) +
+                                    "이(가) 집을 지었습니다!"), 'utf-8')
+            client_sock.send(bytes("집을 짓는데 성공했습니다!"), 'utf-8')
+            break
+
+    client_sock.send(bytes("아무도 집을 짓지 못했습니다."), 'utf-8')
 
     # 메시지 송발신이 끝났으므로, 대상인 client는 목록에서 삭제.
     client_id.remove(client_sock.fileno())
