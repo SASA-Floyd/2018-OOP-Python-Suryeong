@@ -2,6 +2,9 @@ import socket
 import random
 import threading
 from time import sleep
+import os
+import sys
+sys.path.append(os.path.abspath("/Python/FinalProject"))
 from client_class import client
 
 
