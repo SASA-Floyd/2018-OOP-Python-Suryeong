@@ -10,11 +10,12 @@ SERVER_PORT = 50000
 SERVER_ADDRESS = (SERVER_IP, SERVER_PORT)
 
 client_list = []
+START_MONEY = 300
 
 
 class timekeeper(threading.Thread):
 
-    def __init__(self, time, isConnection):
+    def __init__(self, time, isConnection=False):
 
         threading.Thread.__init__(self)
         self.time = time
@@ -44,16 +45,32 @@ def connection():
     global client_list
     timer = timekeeper(60, True)
     timer.start()
-    
+
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind(SERVER_ADDRESS)
     server_socket.listen()
 
     while True:
-        client_socket, client_address = server_socket.accept()
-        
+
+        try:
+            client_socket, client_address = server_socket.accept()
+        except:
+            break
+
+        new_client = client(client_socket, client_address, START_MONEY)
+        client_list.append(new_client)
 
 
+def timeOut():
+    pass
+
+
+def auctionTime():
+    pass
 
 
 def main():
+
+    connect_thread = threading.Thread(target=connection)
+    connect_thread.start()
+    connect_thread.join()
