@@ -13,6 +13,9 @@ SERVER_PORT = 50000
 SERVER_ADDRESS = (SERVER_IP, SERVER_PORT)
 
 client_list = []
+client_id = []
+client_class_list = []
+
 START_MONEY = 300
 
 
