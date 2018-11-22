@@ -15,23 +15,23 @@ START_MONEY = 300
 
 class timekeeper(threading.Thread):
 
-    def __init__(self, time, isConnection=False):
+    def __init__(self, time, server_socket, isConnection=False):
 
         threading.Thread.__init__(self)
         self.time = time
         self.isRunning = True
+        self.server_socket = server_socket
         self.isConnection = isConnection
 
     def run(self):
 
-        global server_socket
         for i in range(self.time):
             print(i)
             if self.isRunning is True:
                 sendMessage(client_list, "Time Over")
 
         if self.isConnection is True:
-            server_socket.close()
+            self.server_socket.close()
 
 
 def sendMessage(clientList, message):
