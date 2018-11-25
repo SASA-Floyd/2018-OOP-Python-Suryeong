@@ -18,6 +18,20 @@ client_class_list = []
 
 START_MONEY = 300
 
+# "Item name": Available Number
+item_dict = {
+    "빨간 벽돌": 6,
+    "파란 벽돌": 1,
+    "나무 합판": 3,
+    "철근": 2,
+    "시멘트": 3,
+    "수령님의 평양냉면": 1,
+    "멸종위기동물 황새": 1
+}
+
+print("********BLUE BRICK********")
+print("Waiting for players...({}/4)".format(len(client_list)))
+
 
 class timekeeper(threading.Thread):
 
@@ -56,7 +70,7 @@ def connection():
     server_socket.bind(SERVER_ADDRESS)
     server_socket.listen()
 
-    while True:
+    while len(client_list) <= 4:
 
         try:
             client_socket, client_address = server_socket.accept()
@@ -66,9 +80,15 @@ def connection():
         new_client = client(client_socket, client_address, START_MONEY)
         client_list.append(new_client)
 
+        print("Waiting for players...({}/4)".format(len(client_list)))
 
+
+#
 def timeOut():
     pass
+
+# 경매
+# 각 클라이언트마다 이 스레드를 가지고 있다
 
 
 def auctionTime():
@@ -80,3 +100,9 @@ def main():
     connect_thread = threading.Thread(target=connection)
     connect_thread.start()
     connect_thread.join()
+    for i in client_list:
+        thread_timeOut = threading.Thread(target=timeOut, args=(client_sock, ))
+        thread_timeOut.start()
+        thread_auctionTime = threading.Thread(
+            target=timeOut, args=(client_sock, ))
+        thread_auctionTime.start()
