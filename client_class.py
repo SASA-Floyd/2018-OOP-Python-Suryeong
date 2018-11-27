@@ -30,11 +30,18 @@ class client(threading.Thread):
         self.my_socket.send(byte_msg)
 
 
-    def get_tender(self):
-
-        
-
     def run(self):
+
+        while True:
+            try:
+                data = self.my_socket.recv(1024)
+            except:
+                print("Connection with %d lost!" % (self.my_socket.fileno()))
+
+            if data == 'CALL':
+                
+
+
 
 
         
