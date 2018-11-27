@@ -2,6 +2,13 @@ import socket
 import random
 import threading
 from time import sleep
+<<<<<<< HEAD
+=======
+import os
+import sys
+sys.path.append(os.path.abspath("/Python/FinalProject"))
+from client_class import client
+>>>>>>> e9eb2e731aa374e77b662865121b943ed3a24aae
 
 
 SERVER_IP = 'localhost'
@@ -12,6 +19,9 @@ call_count = 0
 highest_bidder = None
 is_recieving = True
 client_list = []
+client_id = []
+client_class_list = []
+
 START_MONEY = 300
 
 

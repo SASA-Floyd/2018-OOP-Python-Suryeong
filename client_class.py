@@ -2,20 +2,17 @@ import socket
 import threading
 
 
-class client(threading.Thread):
+class client:
 
     def __init__(self, client_socket, client_address, money):
-        
-        threading.Thread.__init__(self)
         self.my_socket = client_socket
         self.my_address = client_address
         self.money = money
         self.items = {}
         self.is_bankrupt = False
 
-    
     def update(self, item, price):
-        
+
         try:
             self.items[item] += 1
         except KeyError:
@@ -23,11 +20,10 @@ class client(threading.Thread):
 
         self.money -= price
 
-
     def send(self, msg):
-
         byte_msg = bytes(msg, 'utf-8')
         self.my_socket.send(byte_msg)
+<<<<<<< HEAD
 
 
     def run(self):
@@ -45,3 +41,5 @@ class client(threading.Thread):
 
 
         
+=======
+>>>>>>> e9eb2e731aa374e77b662865121b943ed3a24aae
