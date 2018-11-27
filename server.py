@@ -48,10 +48,10 @@ def receive(client_sock):
         # 물품 잔고가 없다면 딕셔너리에서 삭제
         if item_dict[item] == 0:
             del item_dict[item]
-        for sock in client_list:
-            sock.send(bytes("이번 경매 물품은 " + item + "입니다.", 'utf-8'))
-            time.sleep(2)
-            sock.send(bytes("경매를 시작합니다"))
+
+        client_sock.send(bytes("이번 경매 물품은 " + item + "입니다.", 'utf-8'))
+        time.sleep(2)
+        client_sock.send(bytes("경매를 시작합니다"))
 
         # 클라이언트로부터 데이터를 받는다.
         try:

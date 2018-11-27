@@ -23,3 +23,23 @@ class client:
     def send(self, msg):
         byte_msg = bytes(msg, 'utf-8')
         self.my_socket.send(byte_msg)
+<<<<<<< HEAD
+
+
+    def run(self):
+
+        while True:
+            try:
+                data = self.my_socket.recv(1024)
+            except:
+                print("Connection with %d lost!" % (self.my_socket.fileno()))
+
+            if data == 'CALL':
+                
+
+
+
+
+        
+=======
+>>>>>>> e9eb2e731aa374e77b662865121b943ed3a24aae
