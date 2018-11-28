@@ -1,6 +1,7 @@
 import socket
 import random
 import threading
+import copy
 from time import sleep
 
 
@@ -196,6 +197,7 @@ def auctionTime():
     sendMessage(client_list, "now!")
 
     for client in client_list:
+        client=copy.copy(client)
         client.start()
 
     for client in client_list:
