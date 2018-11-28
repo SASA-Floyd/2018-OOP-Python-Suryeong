@@ -118,6 +118,7 @@ class timekeeper(threading.Thread):
 
         global is_recieving
         global client_list
+
         # 3초세기
         for i in range(self.time):
 
@@ -138,9 +139,9 @@ class timekeeper(threading.Thread):
             sendMessage(client_list, "end")
 
 
-def sendMessage(clientList, message):
+def sendMessage(client_list, message):
 
-    for client in clientList:
+    for client in client_list:
         client.send(message)
 
 
@@ -165,12 +166,18 @@ def connection():
         print("Waiting for players...({}/4)".format(len(client_list)))
 
 
-#
+# 경매 물품 하나를 랜덤으로 선택 (반환값: 아이템 이름 문자열)
+def randomSelect():
+    random_item = random.choice(list(d.keys()))
+    item_dict[random_item] -= 1
+    # 남아있는 물품이 없다면 삭제
+    if(item_dict[random_item] == 0)
+    del item_dict[random_item]
+    return random_item
+
+
 def timeOut():
     pass
-
-# 경매
-# 각 클라이언트마다 이 스레드를 가지고 있다
 
 
 def auctionTime():
@@ -180,21 +187,29 @@ def auctionTime():
     current_keeper = 0
     call_count = 0
 
+    rand_item = randomSelect()
+    sendMessage(client_list, "This round's item is {}".format(rand_item))
+    sendMessage(client_list, "Bidding Starts...")
+    sleep(1)
+    sendMessage(client_list, "now!")
+
     for client in client_list:
         client.start()
 
     for client in client_list:
         client.join()
 
+    sendMessage(client_list, "{} won {}".format(highest_bidder, rand_item))
+
 
 # pragma MAIN
 def main():
 
-    connect_thread = threading.Thread(target=connection)
-    connect_thread.start()
-    connect_thread.join()
+    connection()
+    while item_dict:
+        auctionTime()
 
 
-if __name_ '__main__':
+if __name__ == '__main__':
     while True:
         main()
