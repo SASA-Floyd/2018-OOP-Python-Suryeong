@@ -4,7 +4,6 @@ import threading
 from time import sleep
 
 
-
 SERVER_IP = 'localhost'
 SERVER_PORT = 50000
 SERVER_ADDRESS = (SERVER_IP, SERVER_PORT)
@@ -21,7 +20,6 @@ client_class_list = []
 
 START_MONEY = 300
 
-<<<<<<< HEAD
 # "Item name": Available Number
 item_dict = {
     "빨간 벽돌": 6,
@@ -37,9 +35,6 @@ print("********BLUE BRICK********")
 print("Waiting for players...({}/4)".format(len(client_list)))
 
 
-=======
-# 클라이언트 클래스
->>>>>>> 379c02b05adc249157907acf33bb840b15f70ac9
 class client(threading.Thread):
 
     def __init__(self, client_socket, client_address, money):
@@ -72,24 +67,22 @@ class client(threading.Thread):
     def run(self):
 
         # 가장 최근에 call한 사용자가 호출한 타이머
-        global current_keeper
-        # 현재 호출 횟수
         global call_count
         # 가장 최근 호출한 사용자
         global highest_bidder
 
         while True:
             try:
-                data = self.my_socket.recv(1024)
                 if is_recieving == False:
                     break
+                data = self.my_socket.recv(1024)
+
             except:
                 print("Connection with %d lost!" % (self.name))
 
-            if data == 'CALL':# 콜을 받았을 경우
+            if data == 'CALL':  # 콜을 받았을 경우
                 # 변수 업데이
                 call_count += 1
-                current_keeper = call_count
                 highest_bidder = self.name
                 # 새 타이머 시작
                 # 타이머 이름은 호출 횟수와 같음
@@ -118,8 +111,8 @@ class timekeeper(threading.Thread):
 
     # 현재 돌아가고 있는 타이머가 본인인지 체크
     def check(self):
-
-        return current_keeper == self.name
+        global call_count
+        return call_count == self.name
 
     def run(self):
 
@@ -135,15 +128,14 @@ class timekeeper(threading.Thread):
                 break
             sleep(1)
             print(i)
-            sendMessage(client_list,str(3-i))
+            sendMessage(client_list, str(3-i))
 
         if self.is_connection is True:
             self.server_socket.close()
 
         if self.check() is True:
             is_recieving = False
-            sendMessage(client_list,"end")
-
+            sendMessage(client_list, "end")
 
 
 def sendMessage(clientList, message):
@@ -160,14 +152,7 @@ def connection():
     server_socket.bind(SERVER_ADDRESS)
     server_socket.listen()
 
-<<<<<<< HEAD
     while len(client_list) <= 4:
-=======
-    timer = timekeeper(60, server_socket, True, -1)
-    timer.start()
-
-    while True:
->>>>>>> 1fdca41d7ad610ef8ad127b914a5801c47fcf8b8
 
         try:
             client_socket, client_address = server_socket.accept()
@@ -179,7 +164,6 @@ def connection():
 
         print("Waiting for players...({}/4)".format(len(client_list)))
 
-<<<<<<< HEAD
 
 #
 def timeOut():
@@ -187,15 +171,6 @@ def timeOut():
 
 # 경매
 # 각 클라이언트마다 이 스레드를 가지고 있다
-=======
-# pragma timeout
-
-
-def timeOut():
-    pass
-
-# pragma auction
->>>>>>> 1fdca41d7ad610ef8ad127b914a5801c47fcf8b8
 
 
 def auctionTime():
@@ -218,26 +193,8 @@ def main():
     connect_thread = threading.Thread(target=connection)
     connect_thread.start()
     connect_thread.join()
-<<<<<<< HEAD
-    for i in client_list:
-        thread_timeOut = threading.Thread(target=timeOut, args=(client_sock, ))
-        thread_timeOut.start()
-        thread_auctionTime = threading.Thread(
-            target=timeOut, args=(client_sock, ))
-        thread_auctionTime.start()
-=======
 
-    
 
-if __name__ == '__main__':
+if __name_ '__main__':
     while True:
         main()
-
-
-
-
-
-
-
-
->>>>>>> 1fdca41d7ad610ef8ad127b914a5801c47fcf8b8

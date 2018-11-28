@@ -21,6 +21,9 @@ def receive():
     while True:
         try:
             data = mysock.recv(1024)
+            if(data == 'end'):
+                mysock.send(bytes("end"))
+
             print(data.decode('UTF-8'), " *from Server")
         except OSError:
             print('연결이 종료되었습니다.')
