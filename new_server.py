@@ -20,7 +20,23 @@ client_class_list = []
 
 START_MONEY = 300
 
+<<<<<<< HEAD
 # 클라이언트 클래스
+=======
+# "Item name": Available Number
+item_dict = {
+    "빨간 벽돌": 6,
+    "파란 벽돌": 1,
+    "나무 합판": 3,
+    "철근": 2,
+    "시멘트": 3,
+    "수령님의 평양냉면": 1,
+    "멸종위기동물 황새": 1
+}
+
+print("********BLUE BRICK********")
+print("Waiting for players...({}/4)".format(len(client_list)))
+>>>>>>> 2916b1a261d92dff3f331061f57f2fb5b1643972
 
 
 class client(threading.Thread):
@@ -55,24 +71,22 @@ class client(threading.Thread):
     def run(self):
 
         # 가장 최근에 call한 사용자가 호출한 타이머
-        global current_keeper
-        # 현재 호출 횟수
         global call_count
         # 가장 최근 호출한 사용자
         global highest_bidder
 
         while True:
             try:
-                data = self.my_socket.recv(1024)
                 if is_recieving == False:
                     break
+                data = self.my_socket.recv(1024)
+
             except:
                 print("Connection with %d lost!" % (self.name))
 
             if data == 'CALL':  # 콜을 받았을 경우
                 # 변수 업데이
                 call_count += 1
-                current_keeper = call_count
                 highest_bidder = self.name
                 # 새 타이머 시작
                 # 타이머 이름은 호출 횟수와 같음
@@ -101,8 +115,8 @@ class timekeeper(threading.Thread):
 
     # 현재 돌아가고 있는 타이머가 본인인지 체크
     def check(self):
-
-        return current_keeper == self.name
+        global call_count
+        return call_count == self.name
 
     def run(self):
 
@@ -145,10 +159,7 @@ def connection():
     server_socket.bind(SERVER_ADDRESS)
     server_socket.listen()
 
-    timer = timekeeper(60, server_socket, True, -1)
-    timer.start()
-
-    while True:
+    while len(client_list) <= 4:
 
         try:
             client_socket, client_address = server_socket.accept()
@@ -158,14 +169,15 @@ def connection():
         new_client = client(client_socket, client_address, START_MONEY)
         client_list.append(new_client)
 
+        print("Waiting for players...({}/4)".format(len(client_list)))
 
-# pragma timeout
 
-
+#
 def timeOut():
     pass
 
-# pragma auction
+# 경매
+# 각 클라이언트마다 이 스레드를 가지고 있다
 
 
 def auctionTime():
@@ -192,6 +204,6 @@ def main():
     connect_thread.join()
 
 
-if __name__ == '__main__':
+if __name_ '__main__':
     while True:
         main()
