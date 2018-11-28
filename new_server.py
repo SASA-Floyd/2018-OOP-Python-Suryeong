@@ -105,9 +105,9 @@ class timekeeper(threading.Thread):
         self.isRunning = True
         # 타이머에 이름 부여
         self.name = name
-        
 
     # 현재 돌아가고 있는 타이머가 본인인지 체크
+
     def check(self):
         global call_count
         return call_count == self.name
@@ -205,10 +205,6 @@ def main():
         auctionTime()
 
 
-<<<<<<< HEAD
 if __name__ == '__main__':
-=======
-if _name '_main_':
->>>>>>> 095a973ebfcab77643b7cb4ea1d9c9a2edfb284e
     while True:
         main()

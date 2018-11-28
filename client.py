@@ -2,7 +2,7 @@ import socket
 import threading
 
 # 접속할 서버의 정보
-server_ip = '127.0.0.1'
+server_ip = '192.168.56.1'
 server_port = 50000
 address = (server_ip, server_port)
 
