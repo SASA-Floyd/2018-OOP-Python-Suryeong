@@ -111,7 +111,8 @@ class timekeeper(threading.Thread):
 
     def check(self):
         global call_count
-        return call_count == self.name
+        # 이 부분이 오류였음
+        return int(call_count) == int(self.name)
 
     def run(self):
 
@@ -119,11 +120,13 @@ class timekeeper(threading.Thread):
         global client_list
 
         # 3초세기
+        print(self.time)
         for i in range(self.time):
 
             # 만일 현재 돌아가는 타이머가 본인이 아니라면,
             # 즉 내가 실행된 뒤 새로 입찰 요청이 와 타이머가 시작되었다면
             # 숫자세기를 멈춤
+            print(self.check())
             if self.check() is False:
                 break
             sleep(1)
