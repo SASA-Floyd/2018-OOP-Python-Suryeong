@@ -20,9 +20,6 @@ client_class_list = []
 
 START_MONEY = 300
 
-<<<<<<< HEAD
-# 클라이언트 클래스
-=======
 # "Item name": Available Number
 item_dict = {
     "빨간 벽돌": 6,
@@ -34,9 +31,8 @@ item_dict = {
     "멸종위기동물 황새": 1
 }
 
-print("********BLUE BRICK********")
+print("*******BLUE BRICK*******")
 print("Waiting for players...({}/4)".format(len(client_list)))
->>>>>>> 2916b1a261d92dff3f331061f57f2fb5b1643972
 
 
 class client(threading.Thread):
@@ -91,7 +87,7 @@ class client(threading.Thread):
                 # 새 타이머 시작
                 # 타이머 이름은 호출 횟수와 같음
                 # 가장 최근에 호출된 타이머를 판별하기 위해
-                new_keeper = timekeeper(3, None, False, call_count)
+                new_keeper = timekeeper(3, call_count)
                 new_keeper.start()
                 # 전체에게 메세지 보내기
                 sendMessage(client_list, "{} bid!".format(self.name))
@@ -102,16 +98,14 @@ class client(threading.Thread):
 # 타이머 클래스
 class timekeeper(threading.Thread):
 
-    def __init__(self, time, server_socket, is_connection, name):
+    def __init__(self, time, name):
 
         threading.Thread.__init__(self)
         self.time = time
         self.isRunning = True
-        self.server_socket = server_socket
         # 타이머에 이름 부여
         self.name = name
-        # 이건 나중에 지울수도
-        self.is_connection = is_connection
+        
 
     # 현재 돌아가고 있는 타이머가 본인인지 체크
     def check(self):
@@ -134,12 +128,6 @@ class timekeeper(threading.Thread):
             print(i)
             sendMessage(client_list, str(3-i))
 
-        if self.is_connection is True:
-            self.server_socket.close()
-
-        # 내가 끝나고도 새로운 타이머가 시작되지 않았다면
-        # 더이상 입찰 요청이 없는 것
-        # 경매를 끝내도 된다는 뜻
         if self.check() is True:
             is_recieving = False
             sendMessage(client_list, "end")
@@ -186,8 +174,6 @@ def auctionTime():
     global call_count
     current_keeper = 0
     call_count = 0
-    is_recieving=True
-    
 
     for client in client_list:
         client.start()
@@ -204,6 +190,6 @@ def main():
     connect_thread.join()
 
 
-if __name_ '__main__':
+if _name '_main_':
     while True:
         main()
