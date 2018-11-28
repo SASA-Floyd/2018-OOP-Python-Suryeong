@@ -4,7 +4,6 @@ import threading
 from time import sleep
 
 
-
 SERVER_IP = 'localhost'
 SERVER_PORT = 50000
 SERVER_ADDRESS = (SERVER_IP, SERVER_PORT)
@@ -22,6 +21,8 @@ client_class_list = []
 START_MONEY = 300
 
 # 클라이언트 클래스
+
+
 class client(threading.Thread):
 
     def __init__(self, client_socket, client_address, money):
@@ -68,7 +69,7 @@ class client(threading.Thread):
             except:
                 print("Connection with %d lost!" % (self.name))
 
-            if data == 'CALL':# 콜을 받았을 경우
+            if data == 'CALL':  # 콜을 받았을 경우
                 # 변수 업데이
                 call_count += 1
                 current_keeper = call_count
@@ -117,15 +118,17 @@ class timekeeper(threading.Thread):
                 break
             sleep(1)
             print(i)
-            sendMessage(client_list,str(3-i))
+            sendMessage(client_list, str(3-i))
 
         if self.is_connection is True:
             self.server_socket.close()
 
+        # 내가 끝나고도 새로운 타이머가 시작되지 않았다면
+        # 더이상 입찰 요청이 없는 것
+        # 경매를 끝내도 된다는 뜻
         if self.check() is True:
             is_recieving = False
-            sendMessage(client_list,"end")
-
+            sendMessage(client_list, "end")
 
 
 def sendMessage(clientList, message):
@@ -171,6 +174,8 @@ def auctionTime():
     global call_count
     current_keeper = 0
     call_count = 0
+    is_recieving=True
+    
 
     for client in client_list:
         client.start()
@@ -186,16 +191,7 @@ def main():
     connect_thread.start()
     connect_thread.join()
 
-    
 
 if __name__ == '__main__':
     while True:
         main()
-
-
-
-
-
-
-
-
