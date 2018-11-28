@@ -32,7 +32,7 @@ item_dict = {
 }
 
 print("*******BLUE BRICK*******")
-print("Waiting for players...({}/4)".format(len(client_list)))
+print("Waiting for players...({}/2)".format(len(client_list)))
 
 
 class client(threading.Thread):
@@ -77,6 +77,7 @@ class client(threading.Thread):
                     break
                 data = self.my_socket.recv(1024)
                 data = data.decode('utf-8')
+                print(data)
 
             except:
                 print("Connection with %d lost!" % (self.name))
