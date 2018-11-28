@@ -31,7 +31,7 @@ item_dict = {
     "멸종위기동물 황새": 1
 }
 
-print("********BLUE BRICK********")
+print("*******BLUE BRICK*******")
 print("Waiting for players...({}/4)".format(len(client_list)))
 
 
@@ -87,7 +87,7 @@ class client(threading.Thread):
                 # 새 타이머 시작
                 # 타이머 이름은 호출 횟수와 같음
                 # 가장 최근에 호출된 타이머를 판별하기 위해
-                new_keeper = timekeeper(3, None, False, call_count)
+                new_keeper = timekeeper(3, call_count)
                 new_keeper.start()
                 # 전체에게 메세지 보내기
                 sendMessage(client_list, "{} bid!".format(self.name))
@@ -98,16 +98,14 @@ class client(threading.Thread):
 # 타이머 클래스
 class timekeeper(threading.Thread):
 
-    def __init__(self, time, server_socket, is_connection, name):
+    def __init__(self, time, name):
 
         threading.Thread.__init__(self)
         self.time = time
         self.isRunning = True
-        self.server_socket = server_socket
         # 타이머에 이름 부여
         self.name = name
-        # 이건 나중에 지울수도
-        self.is_connection = is_connection
+        
 
     # 현재 돌아가고 있는 타이머가 본인인지 체크
     def check(self):
@@ -130,9 +128,6 @@ class timekeeper(threading.Thread):
             sleep(1)
             print(i)
             sendMessage(client_list, str(3-i))
-
-        if self.is_connection is True:
-            self.server_socket.close()
 
         if self.check() is True:
             is_recieving = False
@@ -210,6 +205,10 @@ def main():
         auctionTime()
 
 
+<<<<<<< HEAD
 if __name__ == '__main__':
+=======
+if _name '_main_':
+>>>>>>> 095a973ebfcab77643b7cb4ea1d9c9a2edfb284e
     while True:
         main()
