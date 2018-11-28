@@ -76,6 +76,7 @@ class client(threading.Thread):
                 if is_recieving == False:
                     break
                 data = self.my_socket.recv(1024)
+                data = data.decode('utf-8')
 
             except:
                 print("Connection with %d lost!" % (self.name))
@@ -148,7 +149,7 @@ def connection():
     server_socket.bind(SERVER_ADDRESS)
     server_socket.listen()
 
-    while len(client_list) <= 4:
+    while len(client_list) < 2:
 
         try:
             client_socket, client_address = server_socket.accept()
@@ -158,16 +159,18 @@ def connection():
         new_client = client(client_socket, client_address, START_MONEY)
         client_list.append(new_client)
 
-        print("Waiting for players...({}/4)".format(len(client_list)))
+        print("Waiting for players...({}/2)".format(len(client_list)))
+
+    print("Game Starts!")
 
 
 # 경매 물품 하나를 랜덤으로 선택 (반환값: 아이템 이름 문자열)
 def randomSelect():
-    random_item = random.choice(list(d.keys()))
+    random_item = random.choice(list(item_dict.keys()))
     item_dict[random_item] -= 1
     # 남아있는 물품이 없다면 삭제
-    if(item_dict[random_item] == 0)
-    del item_dict[random_item]
+    if item_dict[random_item] == 0:
+        del item_dict[random_item]
     return random_item
 
 

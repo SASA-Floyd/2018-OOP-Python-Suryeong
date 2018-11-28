@@ -2,7 +2,7 @@ import socket
 import threading
 
 # 접속할 서버의 정보
-server_ip = '192.168.56.1'
+server_ip = '127.0.0.1'
 server_port = 50000
 address = (server_ip, server_port)
 
@@ -24,7 +24,7 @@ def receive():
             if(data == 'end'):
                 mysock.send(bytes("end"))
 
-            print(data.decode('UTF-8'), " *from Server")
+            print(data.decode('UTF-8'))
         except OSError:
             print('연결이 종료되었습니다.')
             break
@@ -35,6 +35,7 @@ def receive():
 # 메시지를 수신할 스레드 생성 및 실행
 thread_recv = threading.Thread(target=receive, args=())
 thread_recv.start()
+print("Started!")
 
 
 # 메시지 전송 및 판단
@@ -43,12 +44,13 @@ while True:
         data = input('>')
     except KeyboardInterrupt:
         break
+
     if data == '!quit' or '':
         break
-    try:
-        mysock.send(bytes(str(int(data)), 'UTF-8'))
-    except:
-        print("숫자를 입력하세요!")
+    elif data == 'CALL':
+        mysock.send(bytes(data, 'utf-8'))
+    else:
+        print("To Bid, enter 'CALL'")
         continue
 
 # 서버 접속 종료
