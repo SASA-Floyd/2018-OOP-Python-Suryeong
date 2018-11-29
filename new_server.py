@@ -45,6 +45,7 @@ class client(threading.Thread):
         self.my_socket = client_socket
         self.my_address = client_address
         self.money = money
+        self.nickname = None
         self.items = {}
         self.name = self.my_socket.fileno()
         self.is_bankrupt = False
@@ -175,6 +176,9 @@ def connection():
             break
 
         new_client = client(client_socket, client_address, START_MONEY)
+        nick = client_socket.recv(1024)
+        nick = nick.decode('utf-8')
+        new_client.nickname = nick
         client_list.append(new_client)
 
         print("Waiting for players...({}/{})".format(len(client_list), NUMBER_OF_PLAYER))
