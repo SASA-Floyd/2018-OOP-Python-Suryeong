@@ -77,12 +77,9 @@ class client(threading.Thread):
 
                 data = self.my_socket.recv(1024)
                 data = data.decode('utf-8')
-<<<<<<< HEAD
-                print(data)
-=======
+
                 if is_receiving is False:
                     continue
->>>>>>> 3900d63062881ae8f770f2bfc79f25d3aa57aab8
 
             except:
                 print("Connection with %d lost!" % (self.name))
@@ -207,7 +204,6 @@ def auctionTime():
     current_keeper = 0
     call_count = 0
     is_receiving = True
-    
 
     for client in client_list:
         client = copy.copy(client)
