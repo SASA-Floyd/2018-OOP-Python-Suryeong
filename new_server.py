@@ -13,7 +13,7 @@ SERVER_ADDRESS = (SERVER_IP, SERVER_PORT)
 current_keeper = 0
 call_count = 0
 highest_bidder = None
-is_recieving = True
+is_receiving = True
 
 client_list = []
 client_id = []
@@ -74,11 +74,11 @@ class client(threading.Thread):
 
         while True:
             try:
-                if is_recieving == False:
-                    break
+                
                 data = self.my_socket.recv(1024)
                 data = data.decode('utf-8')
-
+                if data == 'end':
+                    break
             except:
                 print("Connection with %d lost!" % (self.name))
 
@@ -89,7 +89,7 @@ class client(threading.Thread):
                 # 새 타이머 시작
                 # 타이머 이름은 호출 횟수와 같음
                 # 가장 최근에 호출된 타이머를 판별하기 위해
-                new_keeper = timekeeper(3, call_count)
+                new_keeper = timekeeper(5, call_count)
                 new_keeper.start()
                 # 전체에게 메세지 보내기
                 sendMessage(client_list, "{} bid!".format(self.name))
@@ -117,7 +117,7 @@ class timekeeper(threading.Thread):
 
     def run(self):
 
-        global is_recieving
+        global is_receiving
         global client_list
 
         # 3초세기
@@ -130,12 +130,13 @@ class timekeeper(threading.Thread):
             print(self.check())
             if self.check() is False:
                 break
-            sleep(1)
+            sendMessage(client_list, str(self.time-i))
+            sleep(2)
             print(i)
-            sendMessage(client_list, str(3-i))
+    
 
         if self.check() is True:
-            is_recieving = False
+            is_receiving = False
             sendMessage(client_list, "end")
 
 
@@ -196,7 +197,7 @@ def auctionTime():
     sendMessage(client_list, "now!")
 
     for client in client_list:
-        client=copy.copy(client)
+        client = copy.copy(client)
         client.start()
 
     for client in client_list:
