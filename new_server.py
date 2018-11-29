@@ -57,6 +57,9 @@ class client(threading.Thread):
             self.items[item] = 1
 
         self.money -= price
+        if self.money < 0:
+            self.is_bankrupt = True
+            self.send("파산!")
 
     # 클라이언트에게 메세지 보내기
     def send(self, msg):
@@ -86,7 +89,7 @@ class client(threading.Thread):
             if data == 'CALL':  # 콜을 받았을 경우
                 # 변수 업데이
                 call_count += 1
-                highest_bidder = self.name
+                highest_bidder = self
                 # 새 타이머 시작
                 # 타이머 이름은 호출 횟수와 같음
                 # 가장 최근에 호출된 타이머를 판별하기 위해
@@ -222,7 +225,9 @@ def auctionTime():
     #     client.join()
 
     print("{} won {}".format(highest_bidder, rand_item))
-    sendMessage(client_list, "{} won {}".format(highest_bidder, rand_item))
+    sendMessage(client_list, "{} won {}".format(highest_bidder.name, rand_item))
+    highest_bidder.update(rand_item, 10 * call_count)
+    print("call count:",call_count)
 
 
 # pragma MAIN
