@@ -33,7 +33,7 @@ item_dict = {
 }
 
 print("*******BLUE BRICK*******")
-print("Waiting for players...({}/4)".format(len(client_list)))
+print("Waiting for players...({}/2)".format(len(client_list)))
 
 
 class client(threading.Thread):
@@ -77,6 +77,7 @@ class client(threading.Thread):
 
                 data = self.my_socket.recv(1024)
                 data = data.decode('utf-8')
+
                 if is_receiving is False:
                     continue
 
@@ -203,7 +204,6 @@ def auctionTime():
     current_keeper = 0
     call_count = 0
     is_receiving = True
-    
 
     for client in client_list:
         client = copy.copy(client)

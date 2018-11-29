@@ -7,15 +7,14 @@ import sys
 pygame.init()
 
 # pygame에서 사용할 변수 선언
-BLACK = (  0,   0,   0)
+BLACK = (0,   0,   0)
 WHITE = (255, 255, 255)
-BLUE  = (100, 149, 237)
-GREEN = (  0, 128,   0)
-RED   = (255,   0,   0)
-YELLOW= (255, 187,   0)
-SILVER= (192, 192, 192)
-TEAL  = (  0, 128, 128)
-
+BLUE = (100, 149, 237)
+GREEN = (0, 128,   0)
+RED = (255,   0,   0)
+YELLOW = (255, 187,   0)
+SILVER = (192, 192, 192)
+TEAL = (0, 128, 128)
 
 
 # 플레이어 기본 화면 구성
@@ -44,7 +43,8 @@ class player:
     # 플레이어의 정보를 띄우는 함수
     def info(self):
         # 배경 설정
-        pygame.draw.rect(self.screen, SILVER, [680, 90+120*self.turn, 270, 100])
+        pygame.draw.rect(self.screen, SILVER, [
+                         680, 90+120*self.turn, 270, 100])
         # 이미지 출력
         pygame.draw.rect(self.screen, BLACK, [30+157*self.turn, 378, 130, 90])
         # 플레이어 이름 출력
@@ -63,7 +63,6 @@ class player:
     def take_my_money(self, money):
         # 금액 출력
         pass
-
 
 
 # 채팅창(보류)
