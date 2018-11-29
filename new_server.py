@@ -85,6 +85,9 @@ class client(threading.Thread):
 
                 if is_receiving is False:
                     continue
+                if self.is_bankrupt is True:
+                    self.send("당신은 파산했습니다!")
+                    continue
 
             except:
                 print("Connection with %d lost!" % (self.name))
