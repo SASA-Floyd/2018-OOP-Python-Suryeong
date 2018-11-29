@@ -36,13 +36,18 @@ def window():
     # 기본 화면 구획
     bgi = pygame.image.load('images\\wall1.png')    # 백그라운드 이미지
     screen.blit(bgi, (0, 0))
-    pygame.draw.rect(screen, YELLOW, [660, 70, 310, 500])    # 플레이어 정보 출력 부분
+    pygame.draw.rect(screen, BLACK, [660, 70, 310, 500])    # 플레이어 정보 출력 부분
     pygame.draw.rect(screen, BLACK, [30, 470, 600, 100])    # 금액 입력 부분..?
     pygame.draw.rect(screen, WHITE, [28, 468, 604, 104], 5)
     pygame.draw.rect(screen, GREEN, [30, 70, 600, 200])     # 아이템 제시 및 기타 정보
     # 잔액 표시 부분
     # 타이머 표시 부분
-    pygame.draw.rect(screen, BLACK, [530, 170, 80, 80])
+    pygame.draw.rect(screen, BLACK, [530, 150, 80, 100])
+    font = pygame.font.Font('fonts\\aJeonjaSigye.ttf', 16)
+    text = font.render('TIMER', True, WHITE, None)
+    textRect = text.get_rect()
+    textRect.center = (570, 160)
+    screen.blit(text, textRect)
 
     return screen
 
@@ -66,9 +71,7 @@ class player:
         # 플레이어 이름 출력
         font = pygame.font.Font('fonts\\aJJinbbangB.ttf', 18)
         text = font.render(self.name, True, BLACK, None)
-        textRect = text.get_rect()
-        textRect.center = (730, 105 + 120 * self.turn)
-        self.screen.blit(text, textRect)
+        self.screen.blit(text, [695, 105 + 120 * self.turn])
         # 플레이어 아이템 출력
 
     # 플레이어가 제시한 금액을 띄우는 함수
