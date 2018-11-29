@@ -10,7 +10,7 @@ address = (server_ip, server_port)
 mysock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 mysock.connect(address)
 
-nickname = input()
+nickname = input("닉네임을 입력하세요:")
 mysock.send(bytes(nickname, 'utf-8'))
 
 
