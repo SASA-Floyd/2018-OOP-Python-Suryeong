@@ -74,11 +74,12 @@ class client(threading.Thread):
 
         while True:
             try:
-                
+
                 data = self.my_socket.recv(1024)
                 data = data.decode('utf-8')
-                if data == 'end':
-                    break
+                if is_receiving is False:
+                    continue
+
             except:
                 print("Connection with %d lost!" % (self.name))
 
@@ -131,13 +132,20 @@ class timekeeper(threading.Thread):
             if self.check() is False:
                 break
             sendMessage(client_list, str(self.time-i))
-            sleep(2)
+            sleep(1)
             print(i)
-    
 
         if self.check() is True:
             is_receiving = False
             sendMessage(client_list, "end")
+
+
+def flagkeeper():
+
+    while is_receiving is True:
+        sleep(0.05)
+
+    print('flag end')
 
 
 def sendMessage(client_list, message):
@@ -168,6 +176,10 @@ def connection():
 
     print("Game Starts!")
 
+    for c in client_list:
+        # client = copy.copy(client)
+        c.start()
+
 
 # 경매 물품 하나를 랜덤으로 선택 (반환값: 아이템 이름 문자열)
 def randomSelect():
@@ -187,8 +199,14 @@ def auctionTime():
 
     global current_keeper
     global call_count
+    global is_receiving
     current_keeper = 0
     call_count = 0
+    is_receiving = True
+    
+
+    for client in client_list:
+        client = copy.copy(client)
 
     rand_item = randomSelect()
     sendMessage(client_list, "This round's item is {}".format(rand_item))
@@ -196,13 +214,14 @@ def auctionTime():
     sleep(1)
     sendMessage(client_list, "now!")
 
-    for client in client_list:
-        client = copy.copy(client)
-        client.start()
+    flag = threading.Thread(target=flagkeeper)
+    flag.start()
+    flag.join()
 
-    for client in client_list:
-        client.join()
+    # for client in client_list:
+    #     client.join()
 
+    print("{} won {}".format(highest_bidder, rand_item))
     sendMessage(client_list, "{} won {}".format(highest_bidder, rand_item))
 
 
