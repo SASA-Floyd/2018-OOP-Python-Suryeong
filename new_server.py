@@ -99,7 +99,7 @@ class client(threading.Thread):
                 new_keeper = timekeeper(5, call_count)
                 new_keeper.start()
                 # 전체에게 메세지 보내기
-                sendMessage(client_list, "{} bid!".format(self.name))
+                sendMessage(client_list, "{} bid!".format(self.nickname))
                 sendMessage(
                     client_list, "Current price is {}".format(call_count*10))
 
@@ -232,7 +232,7 @@ def auctionTime():
 
     print("{} won {}".format(highest_bidder, rand_item))
     sendMessage(client_list, "{} won {}".format(
-        highest_bidder.name, rand_item))
+        highest_bidder.nickname, rand_item))
     highest_bidder.update(rand_item, 10 * call_count)
     informMoney(client_list)
 
