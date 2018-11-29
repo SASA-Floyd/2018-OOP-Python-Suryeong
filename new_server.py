@@ -13,7 +13,7 @@ SERVER_ADDRESS = (SERVER_IP, SERVER_PORT)
 current_keeper = 0
 call_count = 0
 highest_bidder = None
-is_recieving = True
+is_receiving = True
 
 client_list = []
 client_id = []
@@ -74,11 +74,15 @@ class client(threading.Thread):
 
         while True:
             try:
-                if is_recieving == False:
-                    break
+
                 data = self.my_socket.recv(1024)
                 data = data.decode('utf-8')
+<<<<<<< HEAD
                 print(data)
+=======
+                if is_receiving is False:
+                    continue
+>>>>>>> 3900d63062881ae8f770f2bfc79f25d3aa57aab8
 
             except:
                 print("Connection with %d lost!" % (self.name))
@@ -90,7 +94,7 @@ class client(threading.Thread):
                 # 새 타이머 시작
                 # 타이머 이름은 호출 횟수와 같음
                 # 가장 최근에 호출된 타이머를 판별하기 위해
-                new_keeper = timekeeper(3, call_count)
+                new_keeper = timekeeper(5, call_count)
                 new_keeper.start()
                 # 전체에게 메세지 보내기
                 sendMessage(client_list, "{} bid!".format(self.name))
@@ -118,7 +122,7 @@ class timekeeper(threading.Thread):
 
     def run(self):
 
-        global is_recieving
+        global is_receiving
         global client_list
 
         # 3초세기
@@ -131,13 +135,21 @@ class timekeeper(threading.Thread):
             print(self.check())
             if self.check() is False:
                 break
+            sendMessage(client_list, str(self.time-i))
             sleep(1)
             print(i)
-            sendMessage(client_list, str(3-i))
 
         if self.check() is True:
-            is_recieving = False
+            is_receiving = False
             sendMessage(client_list, "end")
+
+
+def flagkeeper():
+
+    while is_receiving is True:
+        sleep(0.05)
+
+    print('flag end')
 
 
 def sendMessage(client_list, message):
@@ -168,6 +180,10 @@ def connection():
 
     print("Game Starts!")
 
+    for c in client_list:
+        # client = copy.copy(client)
+        c.start()
+
 
 # 경매 물품 하나를 랜덤으로 선택 (반환값: 아이템 이름 문자열)
 def randomSelect():
@@ -187,8 +203,14 @@ def auctionTime():
 
     global current_keeper
     global call_count
+    global is_receiving
     current_keeper = 0
     call_count = 0
+    is_receiving = True
+    
+
+    for client in client_list:
+        client = copy.copy(client)
 
     rand_item = randomSelect()
     sendMessage(client_list, "This round's item is {}".format(rand_item))
@@ -196,13 +218,14 @@ def auctionTime():
     sleep(1)
     sendMessage(client_list, "now!")
 
-    for client in client_list:
-        client=copy.copy(client)
-        client.start()
+    flag = threading.Thread(target=flagkeeper)
+    flag.start()
+    flag.join()
 
-    for client in client_list:
-        client.join()
+    # for client in client_list:
+    #     client.join()
 
+    print("{} won {}".format(highest_bidder, rand_item))
     sendMessage(client_list, "{} won {}".format(highest_bidder, rand_item))
 
 
