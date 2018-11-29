@@ -236,6 +236,18 @@ def auctionTime():
     highest_bidder.update(rand_item, 10 * call_count)
     informMoney(client_list)
 
+    if existsWinner():
+        sendMessage(client_list, "{} won the game!!".format(
+            highest_bidder.nickname))
+        exit()
+
+
+def existsWinner():
+    for client in client_list:
+        if "빨간 벽돌" in client.items and "파란 벽돌" in client.items:
+            return True
+    return False
+
 
 def informMoney(clinet_list):
     for client in client_list:
