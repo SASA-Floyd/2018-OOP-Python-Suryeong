@@ -181,7 +181,6 @@ def connection():
     print("Game Starts!")
 
     for c in client_list:
-        # client = copy.copy(client)
         c.start()
 
 
