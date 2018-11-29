@@ -8,6 +8,7 @@ from time import sleep
 SERVER_IP = 'localhost'
 SERVER_PORT = 50000
 SERVER_ADDRESS = (SERVER_IP, SERVER_PORT)
+NUMBER_OF_PLAYER = 2
 
 # 3초세는거 하기 위한 전역변수
 current_keeper = 0
@@ -33,7 +34,7 @@ item_dict = {
 }
 
 print("*******BLUE BRICK*******")
-print("Waiting for players...({}/2)".format(len(client_list)))
+print("Waiting for players...({}/{})".format(len(client_list), NUMBER_OF_PLAYER))
 
 
 class client(threading.Thread):
@@ -44,6 +45,7 @@ class client(threading.Thread):
         self.my_socket = client_socket
         self.my_address = client_address
         self.money = money
+        self.nickname = None
         self.items = {}
         self.name = self.my_socket.fileno()
         self.is_bankrupt = False
@@ -57,6 +59,9 @@ class client(threading.Thread):
             self.items[item] = 1
 
         self.money -= price
+        if self.money < 0:
+            self.is_bankrupt = True
+            self.send("파산!")
 
     # 클라이언트에게 메세지 보내기
     def send(self, msg):
@@ -80,21 +85,26 @@ class client(threading.Thread):
 
                 if is_receiving is False:
                     continue
+                if self.is_bankrupt is True:
+                    self.send("당신은 파산했습니다!")
+                    continue
 
             except:
                 print("Connection with %d lost!" % (self.name))
 
             if data == 'CALL':  # 콜을 받았을 경우
-                # 변수 업데이
+                # 변수 업데이트
                 call_count += 1
-                highest_bidder = self.name
+                highest_bidder = self
                 # 새 타이머 시작
                 # 타이머 이름은 호출 횟수와 같음
                 # 가장 최근에 호출된 타이머를 판별하기 위해
                 new_keeper = timekeeper(5, call_count)
                 new_keeper.start()
                 # 전체에게 메세지 보내기
-                sendMessage(client_list, "{} bid!".format(self.name))
+                sendMessage(client_list, "{} bid!".format(self.nickname))
+                sendMessage(
+                    client_list, "Current price is {}".format(call_count*10))
 
 
 # pragma timekeeper
@@ -163,7 +173,7 @@ def connection():
     server_socket.bind(SERVER_ADDRESS)
     server_socket.listen()
 
-    while len(client_list) < 2:
+    while len(client_list) < NUMBER_OF_PLAYER:
 
         try:
             client_socket, client_address = server_socket.accept()
@@ -171,14 +181,16 @@ def connection():
             break
 
         new_client = client(client_socket, client_address, START_MONEY)
+        nick = client_socket.recv(1024)
+        nick = nick.decode('utf-8')
+        new_client.nickname = nick
         client_list.append(new_client)
 
-        print("Waiting for players...({}/2)".format(len(client_list)))
+        print("Waiting for players...({}/{})".format(len(client_list), NUMBER_OF_PLAYER))
 
     print("Game Starts!")
 
     for c in client_list:
-        # client = copy.copy(client)
         c.start()
 
 
@@ -209,7 +221,7 @@ def auctionTime():
         client = copy.copy(client)
 
     rand_item = randomSelect()
-    sendMessage(client_list, "This round's item is {}".format(rand_item))
+    sendMessage(client_list, "This round's item is {}\n".format(rand_item))
     sendMessage(client_list, "Bidding Starts...")
     sleep(1)
     sendMessage(client_list, "now!")
@@ -222,7 +234,28 @@ def auctionTime():
     #     client.join()
 
     print("{} won {}".format(highest_bidder, rand_item))
-    sendMessage(client_list, "{} won {}".format(highest_bidder, rand_item))
+    sendMessage(client_list, "{} won {}".format(
+        highest_bidder.nickname, rand_item))
+    highest_bidder.update(rand_item, 10 * call_count)
+    informMoney(client_list)
+
+    if existsWinner():
+        sendMessage(client_list, "{} won the game!!".format(
+            highest_bidder.nickname))
+        exit()
+
+
+def existsWinner():
+    for client in client_list:
+        if "빨간 벽돌" in client.items and "파란 벽돌" in client.items:
+            return True
+    return False
+
+
+def informMoney(clinet_list):
+    for client in client_list:
+        client.send("Left money: {}\n".format(client.money))
+        client.send("Inventory: {}\n".format(client.items))
 
 
 # pragma MAIN

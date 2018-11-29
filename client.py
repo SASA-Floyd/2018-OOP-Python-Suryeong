@@ -10,6 +10,10 @@ address = (server_ip, server_port)
 mysock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 mysock.connect(address)
 
+nickname = input("닉네임을 입력하세요:")
+mysock.send(bytes(nickname, 'utf-8'))
+
+
 # 스레드 종료 키
 thread_end = 0
 
