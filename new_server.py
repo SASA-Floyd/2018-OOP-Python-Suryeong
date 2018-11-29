@@ -100,6 +100,8 @@ class client(threading.Thread):
                 new_keeper.start()
                 # 전체에게 메세지 보내기
                 sendMessage(client_list, "{} bid!".format(self.name))
+                sendMessage(
+                    client_list, "Current price is {}".format(call_count*10))
 
 
 # pragma timekeeper
@@ -216,7 +218,7 @@ def auctionTime():
         client = copy.copy(client)
 
     rand_item = randomSelect()
-    sendMessage(client_list, "This round's item is {}".format(rand_item))
+    sendMessage(client_list, "This round's item is {}\n".format(rand_item))
     sendMessage(client_list, "Bidding Starts...")
     sleep(1)
     sendMessage(client_list, "now!")
@@ -229,15 +231,16 @@ def auctionTime():
     #     client.join()
 
     print("{} won {}".format(highest_bidder, rand_item))
-    sendMessage(client_list, "{} won {}".format(highest_bidder, rand_item))
+    sendMessage(client_list, "{} won {}".format(
+        highest_bidder.name, rand_item))
     highest_bidder.update(rand_item, 10 * call_count)
     informMoney(client_list)
 
 
 def informMoney(clinet_list):
     for client in client_list:
-        client.send("Left money: {}".format(client.money))
-        client.send("Inventory: {}".format(client.items))
+        client.send("Left money: {}\n".format(client.money))
+        client.send("Inventory: {}\n".format(client.items))
 
 
 # pragma MAIN
