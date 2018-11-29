@@ -49,10 +49,10 @@ class player:
         pygame.draw.rect(self.screen, BLACK, [30+157*self.turn, 378, 130, 90])
         # 플레이어 이름 출력
         try:
-            font = pygame.font.Font(None, 18)
-            text = font.render(self.name, True, WHITE, None)
+            font = pygame.font.Font('fonts\\aJJinbbangB.ttf', 18)
+            text = font.render(self.name, True, BLACK, None)
             textRect = text.get_rect()
-            textRect.center = (700, 100+120*self.turn)
+            textRect.center = (730, 105+120*self.turn)
             self.screen.blit(text, textRect)
         except:
             print("no font file")
@@ -89,7 +89,7 @@ if __name__ == '__main__':
         screen = window()
 
         # 테스트!!!
-        player1 = player(screen, 'hwangsae', 0, 0)
+        player1 = player(screen, '황새', 0, 0)
         player2 = player(screen, 'foodduck', 1, 0)
         player3 = player(screen, 'yaho', 2, 0)
         player4 = player(screen, 'helpme', 3, 0)
