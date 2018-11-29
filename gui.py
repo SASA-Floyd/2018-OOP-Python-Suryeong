@@ -27,12 +27,24 @@ su = pygame.image.load('')
 hw = pygame.image.load('')
 '''
 
+# 플레이어 이미지
+'''
+p1 = pygame.image.load('')
+p2 = pygame.image.load('')
+p3 = pygame.image.load('')
+p4 = pygame.image.load('')
+img = [p1, p2, p3, p4]
+'''
 
-# 플레이어 기본 화면 구성
+
+# 플레이어 기본 창
 def window():
     screen = pygame.display.set_mode([1000, 600], 0, 32)
     pygame.display.set_caption('Blue Brick')
+    return screen
 
+# 플레이 화면 구성
+def window_deco(screen):
     # 기본 화면 구획
     bgi = pygame.image.load('images\\wall1.png')    # 백그라운드 이미지
     screen.blit(bgi, (0, 0))
@@ -68,6 +80,7 @@ class player:
                          680, 90+120*self.turn, 270, 100])
         # 플레이어 이미지 출력
         pygame.draw.rect(self.screen, BLACK, [30+157*self.turn, 375, 130, 90])
+        #screen.blit(img[self.turn], (30+157*self.turn, 375))
         # 플레이어 이름 출력
         font = pygame.font.Font('fonts\\aJJinbbangB.ttf', 18)
         text = font.render(self.name, True, BLACK, None)
@@ -106,6 +119,7 @@ if __name__ == '__main__':
 
         # 화면 설정
         screen = window()
+        window_deco(screen)
 
         # 테스트!!!
         player1 = player(screen, '황새', 0, 200, 0)
