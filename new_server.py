@@ -8,6 +8,7 @@ from time import sleep
 SERVER_IP = 'localhost'
 SERVER_PORT = 50000
 SERVER_ADDRESS = (SERVER_IP, SERVER_PORT)
+NUMBER_OF_PLAYER = 2
 
 # 3초세는거 하기 위한 전역변수
 current_keeper = 0
@@ -33,7 +34,7 @@ item_dict = {
 }
 
 print("*******BLUE BRICK*******")
-print("Waiting for players...({}/2)".format(len(client_list)))
+print("Waiting for players...({}/{})".format(len(client_list), NUMBER_OF_PLAYER))
 
 
 class client(threading.Thread):
@@ -85,7 +86,7 @@ class client(threading.Thread):
                 print("Connection with %d lost!" % (self.name))
 
             if data == 'CALL':  # 콜을 받았을 경우
-                # 변수 업데이
+                # 변수 업데이트
                 call_count += 1
                 highest_bidder = self.name
                 # 새 타이머 시작
@@ -163,7 +164,7 @@ def connection():
     server_socket.bind(SERVER_ADDRESS)
     server_socket.listen()
 
-    while len(client_list) < 2:
+    while len(client_list) < NUMBER_OF_PLAYER:
 
         try:
             client_socket, client_address = server_socket.accept()
@@ -173,7 +174,7 @@ def connection():
         new_client = client(client_socket, client_address, START_MONEY)
         client_list.append(new_client)
 
-        print("Waiting for players...({}/2)".format(len(client_list)))
+        print("Waiting for players...({}/{})".format(len(client_list), NUMBER_OF_PLAYER))
 
     print("Game Starts!")
 
@@ -223,6 +224,13 @@ def auctionTime():
 
     print("{} won {}".format(highest_bidder, rand_item))
     sendMessage(client_list, "{} won {}".format(highest_bidder, rand_item))
+    informMoney(client_list)
+
+
+def informMoney(clinet_list):
+    for client in client_list:
+        client.send("Left money: {}".format(client.money))
+        client.send("Inventory: {}".format(client.items))
 
 
 # pragma MAIN
