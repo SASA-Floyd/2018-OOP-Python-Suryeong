@@ -1,5 +1,8 @@
 import socket
 import threading
+import gui
+import pickle
+
 
 # 접속할 서버의 정보
 server_ip = '127.0.0.1'
@@ -21,15 +24,22 @@ thread_end = 0
 # 서버가 보내는 메시지를 수신할 함수 | Thread 활용
 def receive():
     global mysock
-
     while True:
         try:
             data = mysock.recv(1024)
-            data = data.decode('UTF-8')
-            if(data == 'end'):
-                mysock.send(bytes("end", 'UTF-8'))
 
-            print(data)
+            try:
+                data_dict = pickle.loads(data)
+                print(data_dict)
+
+            except:
+                data = data.decode('UTF-8')
+
+                if(data == 'end'):
+                    mysock.send(bytes("end", 'UTF-8'))
+
+                print(data)
+
         except OSError:
             print('연결이 종료되었습니다.')
             break

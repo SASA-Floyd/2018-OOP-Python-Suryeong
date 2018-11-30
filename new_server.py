@@ -3,6 +3,7 @@ import random
 import threading
 import copy
 from time import sleep
+import pickle
 
 
 SERVER_IP = 'localhost'
@@ -252,10 +253,20 @@ def existsWinner():
     return False
 
 
-def informMoney(clinet_list):
+def informMoney(client_list):
+    item_dict = {}
+    for client in client_list:
+        item_dict[client.name] = client.items
     for client in client_list:
         client.send("Left money: {}\n".format(client.money))
         client.send("Inventory: {}\n".format(client.items))
+
+        # 다른 형식의 데이터가 넘어가기 때문에 클라이언트에서 새 recv가 열릴 때까지 대기
+        sleep(1)
+
+        # 모든 사람들의 아이템 dict를 피클로 보내기(gui용)
+        data_dict = pickle.dumps(item_dict)
+        client.my_socket.send(data_dict)
 
 
 # pragma MAIN
