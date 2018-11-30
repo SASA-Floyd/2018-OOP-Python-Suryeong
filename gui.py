@@ -33,6 +33,7 @@ cm = pygame.image.load(
 '''
 
 # 플레이어 이미지
+<<<<<<< HEAD
 '''
 p1 = pygame.image.load(
     'images/dimen_shaded.png')
@@ -43,6 +44,15 @@ p3 = pygame.image.load(
 p4 = pygame.image.load(
     'images/dimen_shaded.png')
 img = [p1, p2, p3, p4]
+=======
+
+p1 = pygame.image.load('images\\hwangsae.png')
+p2 = pygame.image.load('images\\sooryeong.png')
+p3 = pygame.image.load('images\\hwangsae.png')
+p4 = pygame.image.load('images\\sooryeong.png')
+img = [p1, p2, p3, p4]
+
+>>>>>>> 2145748625df945b5a0aa85186fd366912245c67
 
 
 # 플레이어 기본 창
@@ -92,8 +102,13 @@ class player:
         pygame.draw.rect(self.screen, SILVER, [
                          680, 90+120*self.turn, 270, 100])
         # 플레이어 이미지 출력
+<<<<<<< HEAD
         pygame.draw.rect(self.screen, BLACK, [30+157*self.turn, 375, 130, 90])
         # screen.blit(img[self.turn], (30+157*self.turn, 375))
+=======
+        screen.blit(img[self.turn], (30+157*self.turn, 150))
+        pygame.draw.rect(self.screen, BLACK, [30 + 157 * self.turn, 375, 130, 90])
+>>>>>>> 2145748625df945b5a0aa85186fd366912245c67
         # 플레이어 이름 출력
         font = pygame.font.Font(
             'fonts/aJeonjaSigye.ttf', 18)
@@ -111,10 +126,51 @@ class player:
         textRect.center = (95+158*self.turn, 420)
         self.screen.blit(text, textRect)
 
+<<<<<<< HEAD
 
 # 채팅창(보류)
 class chat:
     pass
+=======
+'''
+def get_key():
+    while 1:
+        event = pygame.event.poll()
+        if event.type == KEYDOWN:
+            return event.key
+        else:
+            pass
+            '''
+
+# 금액 입력 기능
+def call(screen):
+    money_string = []
+    while 1:
+        inkey = get_key()
+        if inkey == K_BACKSPACE:
+            money_string = money_string[0:-1]
+        elif inkey == K_RETURN:
+            break
+        else:
+            money_string.append(inkey)
+    text = font.render(money_string, True, WHITE, None)
+    screen.blit(text, (50, 490))
+
+
+def textbox():
+    txtbx = eztext.Input(maxlength=45, color=(255,0,0), prompt='type here: ')
+    txtbx.set_pos(200,200)
+    while True:
+        txtbx.draw(screen)
+        events = pygame.event.get()
+    for event in events:
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            return
+    txtbx.update(events)
+    txtbx.draw(screen)
+    pygame.display.update()
+    return txtbx
+>>>>>>> 2145748625df945b5a0aa85186fd366912245c67
 
 
 if __name__ == '__main__':
@@ -131,9 +187,14 @@ if __name__ == '__main__':
                 pygame.quit()
                 sys.exit()
 
+
         # 화면 설정
         screen = window()
         window_deco(screen)
+
+
+        print(textbox())
+
 
         # 테스트!!!
         player1 = player(screen, '황새', 0, 200, 0)
