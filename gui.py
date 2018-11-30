@@ -3,6 +3,7 @@ import pygame
 from pygame.locals import *
 import sys
 
+
 # pygame 초기화
 pygame.init()
 
@@ -17,24 +18,31 @@ SILVER = (192, 192, 192)
 TEAL = (0, 128, 128)
 
 # 사용할 기본 아이템
-'''
-rb = pygame.image.load('')
-bb = pygame.image.load('')
-wd = pygame.image.load('')
-fe = pygame.image.load('')
-cm = pygame.image.load('')
-su = pygame.image.load('')
-hw = pygame.image.load('')
+
+rb = pygame.image.load(
+    'images/redbrick.png')
+# bb = pygame.image.load('')
+wd = pygame.image.load(
+    'images/wood.png')
+fe = pygame.image.load(
+    'images/iron.png')
+cm = pygame.image.load(
+    'images/cement.png')
+# su = pygame.image.load('')
+# hw = pygame.image.load('')
 '''
 
 # 플레이어 이미지
 '''
-p1 = pygame.image.load('')
-p2 = pygame.image.load('')
-p3 = pygame.image.load('')
-p4 = pygame.image.load('')
+p1 = pygame.image.load(
+    'images/dimen_shaded.png')
+p2 = pygame.image.load(
+    'images/dimen_shaded.png')
+p3 = pygame.image.load(
+    'images/dimen_shaded.png')
+p4 = pygame.image.load(
+    'images/dimen_shaded.png')
 img = [p1, p2, p3, p4]
-'''
 
 
 # 플레이어 기본 창
@@ -44,9 +52,13 @@ def window():
     return screen
 
 # 플레이 화면 구성
+
+
 def window_deco(screen):
     # 기본 화면 구획
-    bgi = pygame.image.load('images\\wall1.png')    # 백그라운드 이미지
+    # 백그라운드 이미지
+    bgi = pygame.image.load(
+        'images/wall1.png')
     screen.blit(bgi, (0, 0))
     pygame.draw.rect(screen, BLACK, [660, 70, 310, 500])    # 플레이어 정보 출력 부분
     pygame.draw.rect(screen, BLACK, [30, 470, 600, 100])    # 금액 입력 부분..?
@@ -55,7 +67,8 @@ def window_deco(screen):
     # 잔액 표시 부분
     # 타이머 표시 부분
     pygame.draw.rect(screen, BLACK, [530, 150, 80, 100])
-    font = pygame.font.Font('fonts\\aJeonjaSigye.ttf', 16)
+    font = pygame.font.Font(
+        'fonts/aJeonjaSigye.ttf', 16)
     text = font.render('TIMER', True, WHITE, None)
     textRect = text.get_rect()
     textRect.center = (570, 160)
@@ -80,9 +93,10 @@ class player:
                          680, 90+120*self.turn, 270, 100])
         # 플레이어 이미지 출력
         pygame.draw.rect(self.screen, BLACK, [30+157*self.turn, 375, 130, 90])
-        #screen.blit(img[self.turn], (30+157*self.turn, 375))
+        # screen.blit(img[self.turn], (30+157*self.turn, 375))
         # 플레이어 이름 출력
-        font = pygame.font.Font('fonts\\aJJinbbangB.ttf', 18)
+        font = pygame.font.Font(
+            'fonts/aJeonjaSigye.ttf', 18)
         text = font.render(self.name, True, BLACK, None)
         self.screen.blit(text, [695, 105 + 120 * self.turn])
         # 플레이어 아이템 출력
@@ -90,12 +104,12 @@ class player:
     # 플레이어가 제시한 금액을 띄우는 함수
     def take_my_money(self, money):
         # 금액 출력
-        font = pygame.font.Font('fonts\\aJJinbbangB.ttf', 48)
+        font = pygame.font.Font(
+            'fonts/aJeonjaSigye.ttf', 48)
         text = font.render(str(money), True, YELLOW, None)
         textRect = text.get_rect()
         textRect.center = (95+158*self.turn, 420)
         self.screen.blit(text, textRect)
-
 
 
 # 채팅창(보류)
@@ -123,7 +137,7 @@ if __name__ == '__main__':
 
         # 테스트!!!
         player1 = player(screen, '황새', 0, 200, 0)
-        player2 = player(screen, 'dimen', 1, 200, 0)
+        player2 = player(screen, 'Dimen', 1, 200, 0)
         player3 = player(screen, '수령', 2, 200, 0)
         player4 = player(screen, '???', 3, 200, 0)
         player1.info()
