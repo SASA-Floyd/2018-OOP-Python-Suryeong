@@ -30,7 +30,7 @@ hw = pygame.image.load('')
 # 플레이어 이미지
 p1 = pygame.image.load('images\\hwangsae.png')
 p2 = pygame.image.load('images\\sooryeong.png')
-p3 = pygame.image.load('images\\hwangsae.png')
+p3 = pygame.image.load('images\\dimen_shaded.png')
 p4 = pygame.image.load('images\\sooryeong.png')
 img = [p1, p2, p3, p4]
 
@@ -41,6 +41,59 @@ def window():
     pygame.display.set_caption('Blue Brick')
     return screen
 
+
+# 게임 접속할때까지 대기하는 화면
+def waiting(screen):
+    screen.fill(BLACK)
+    font = pygame.font.Font('fonts\\aJJinbbangB.ttf', 20)
+    text = font.render('접속 중 . . . ', True, WHITE, None)
+    textRect = text.get_rect()
+    textRect.center = (500, 300)
+    screen.blit(text, textRect)
+    pygame.display.update()
+
+
+# 게임 접속시 닉네임을 입력받는 화면
+def nickname(screen):
+    screen.fill(BLACK)
+    # 안내 문구
+    font1 = pygame.font.Font('fonts\\aJJinbbangB.ttf', 30)
+    font2 = pygame.font.Font('fonts\\aJJinbbangB.ttf', 15)
+    text1 = font1.render('닉네임을 입력하세요.', True, WHITE, None)
+    text2 = font2.render('닉네임을 결정하셨다면 ENTER키를 누르세요.', True, WHITE, None)
+    textRect1 = text1.get_rect()
+    textRect2 = text2.get_rect()
+    textRect1.center = (500, 250)
+    textRect2.center = (500, 285)
+    screen.blit(text1, textRect1)
+    screen.blit(text2, textRect2)
+    # 텍스트 입력 부분
+    textinput = pygame_textinput.TextInput('', 'fonts\\aJJinbbangB.ttf', 30, True, WHITE, WHITE)
+    pygame.display.update()
+
+    clock = pygame.time.Clock()
+
+    while True:
+        pygame.draw.rect(screen, WHITE, [380, 300, 240, 80]) # 닉네임 입력 창
+        pygame.draw.rect(screen, BLACK, [386, 306, 228, 68])
+
+        events = pygame.event.get()
+        for event in events:
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            # 엔터키를 누르면 닉네임 리턴
+            if event.type == pygame.KEYDOWN:
+                if event.key == K_RETURN:
+                    name = textinput.get_text()
+                    return name
+
+        textinput.update(events)
+        screen.blit(textinput.get_surface(), (400, 325))
+        pygame.display.update()
+        clock.tick(30)
+
+
 # 플레이 화면 구성
 def window_deco(screen):
     # 기본 화면 구획
@@ -50,7 +103,7 @@ def window_deco(screen):
     pygame.draw.rect(screen, BLACK, [30, 470, 600, 100])    # 금액 입력 부분
     pygame.draw.rect(screen, WHITE, [28, 468, 604, 104], 5)
     pygame.draw.rect(screen, GREEN, [30, 70, 600, 200])     # 아이템 제시 및 기타 정보
-    pygame.draw.rect(screen, SILVER, [30, 70, 600, 200], 5)
+    pygame.draw.rect(screen, SILVER, [30, 70, 600, 200], 8)
     # 보유금액 표시 부분
     pygame.draw.rect(screen, WHITE, [410, 495, 200, 50], 4)
     font = pygame.font.Font('fonts\\aJJinbbangB.ttf', 18)
@@ -105,8 +158,9 @@ class player:
             self.screen.blit(text, textRect)
 
 
-# 금액 입력 기능(아직ㅠㅜ)
+# 금액 입력 기능( ** 스레드 활용..? ** )
 def call(screen):
+    clock = pygame.time.Clock()
     textinput = pygame_textinput.TextInput('금액을 입력하세요.','fonts\\aJJinbbangB.ttf', 35, True, WHITE, WHITE)
     while True:
         events = pygame.event.get()
@@ -116,12 +170,22 @@ def call(screen):
                 sys.exit()
         textinput.update(events)
         screen.blit(textinput.get_surface(), (50, 490))
+        pygame.display.update()
+        clock.tick(30)
 
 
 if __name__ == '__main__':
     TARGET_FPS = 10
     clock = pygame.time.Clock()
     play = True
+
+    screen = window()
+
+    # 접속 대기 화면
+    waiting(screen)
+
+    # 닉네임 입력 화면
+    username = nickname(screen)
 
     while play:
         clock.tick(TARGET_FPS)
@@ -132,11 +196,11 @@ if __name__ == '__main__':
                 pygame.quit()
                 sys.exit()
 
-
         # 화면 설정
-        screen = window()
         window_deco(screen)
 
+        # ** 금액 입력받는 부분 만들어야함 **
+        # call(screen)
 
         # 테스트!!!
         player1 = player(screen, '황새', 0, 200, 0)
@@ -147,7 +211,6 @@ if __name__ == '__main__':
         player2.info()
         player3.info()
         player4.info()
-        call(screen)
         player1.take_my_money(10)
         player1.take_my_money(20)
         player3.take_my_money(30)
