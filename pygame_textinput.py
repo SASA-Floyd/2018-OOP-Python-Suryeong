@@ -1,16 +1,22 @@
 """
 Copyright 2017, Silas Gyger, silasgyger@gmail.com, All rights reserved.
-
 Borrowed from https://github.com/Nearoo/pygame-text-input under the MIT license.
+"""
+"""
+한글 입력 기능 추가 by 장영웅
 """
 
 import os.path
 
 import pygame
 import pygame.locals as pl
+from heconvert.converter import *
 
 pygame.font.init()
 
+hangul=False
+temp_text=''
+converted_temp_text=''
 
 class TextInput:
     """
@@ -21,9 +27,10 @@ class TextInput:
     def __init__(
             self,
             initial_string="",
-            font_family="",
-            font_size=35,
+            font_family='fonts\\aJJinbbangB.ttf',
+            font_size=15,
             antialias=True,
+            max_text=120,
             text_color=(0, 0, 0),
             cursor_color=(0, 0, 1),
             repeat_keys_initial_ms=400,
@@ -38,6 +45,7 @@ class TextInput:
         :param repeat_keys_initial_ms: Time in ms before keys are repeated when held
         :param repeat_keys_interval_ms: Interval between key press repetition when helpd
         """
+        self.max_text = max_text
 
         # Text related vars:
         self.antialias = antialias
@@ -70,6 +78,8 @@ class TextInput:
         self.clock = pygame.time.Clock()
 
     def update(self, events):
+        global hangul, temp_text, converted_temp_text
+
         for event in events:
             if event.type == pygame.KEYDOWN:
                 self.cursor_visible = True  # So the user sees where he writes
@@ -78,45 +88,137 @@ class TextInput:
                 if event.key not in self.keyrepeat_counters:
                     self.keyrepeat_counters[event.key] = [0, event.unicode]
 
-                if event.key == pl.K_BACKSPACE:
-                    self.input_string = (
-                        self.input_string[:max(self.cursor_position - 1, 0)]
-                        + self.input_string[self.cursor_position:]
-                    )
+                if hangul:
 
-                    # Subtract one from cursor_pos, but do not go below zero:
-                    self.cursor_position = max(self.cursor_position - 1, 0)
-                elif event.key == pl.K_DELETE:
-                    self.input_string = (
-                        self.input_string[:self.cursor_position]
-                        + self.input_string[self.cursor_position + 1:]
-                    )
+                    #print(event.key)
 
-                elif event.key == pl.K_RETURN:
-                    return True
+                    if event.key == pl.K_BACKSPACE:
+                        self.input_string = (
+                            self.input_string[:max(self.cursor_position - len(converted_temp_text), 0)]
+                            + self.input_string[self.cursor_position:]
+                        )
 
-                elif event.key == pl.K_RIGHT:
-                    # Add one to cursor_pos, but do not exceed len(input_string)
-                    self.cursor_position = min(self.cursor_position + 1, len(self.input_string))
+                        # Subtract one from cursor_pos, but do not go below zero:
+                        self.cursor_position = max(self.cursor_position - len(converted_temp_text), 0)
 
-                elif event.key == pl.K_LEFT:
-                    # Subtract one from cursor_pos, but do not go below zero:
-                    self.cursor_position = max(self.cursor_position - 1, 0)
+                        converted_temp_text=converted_temp_text[:max(len(converted_temp_text)-1,0)]
+                        temp_text=h2e(converted_temp_text)
 
-                elif event.key == pl.K_END:
-                    self.cursor_position = len(self.input_string)
+                        #print(e2h(temp_text))
 
-                elif event.key == pl.K_HOME:
-                    self.cursor_position = 0
+                        # If no special key is pressed, add unicode of key to input_string
+                        self.input_string = (
+                            self.input_string[:self.cursor_position]
+                            + converted_temp_text
+                            + self.input_string[self.cursor_position:]
+                        )
+                        self.cursor_position += len(converted_temp_text) # Some are empty, e.g. K_UP
+
+
+
+                    elif event.key == pl.K_DELETE:
+                        self.input_string = (
+                            self.input_string[:self.cursor_position]
+                            + self.input_string[self.cursor_position + 1:]
+                        )
+
+                    elif event.key == pl.K_RETURN or event.key == 271:
+                        temp_text=''
+                        converted_temp_text=''
+                        t=self.input_string
+                        self.clear_text()
+                        #print(t)
+                        return t
+
+                    elif (event.key == pl.K_SPACE and pygame.key.get_mods() & pl.KMOD_SHIFT) or event.key==0:
+                        hangul = not hangul
+                        #print('Hangul to English')
+                        temp_text=''
+                        converted_temp_text=''
+
+                    else:
+                        if len(self.input_string)<=self.max_text:
+
+                            #기존꺼 빼고
+                            self.input_string = (
+                                self.input_string[:max(self.cursor_position - len(converted_temp_text), 0)]
+                                + self.input_string[self.cursor_position:]
+                            )
+
+                            # Subtract one from cursor_pos, but do not go below zero:
+                            self.cursor_position = max(self.cursor_position - len(converted_temp_text), 0)
+
+                            temp_text+=event.unicode
+                            converted_temp_text=e2h(temp_text)
+
+                            #다시 넣기
+                            # If no special key is pressed, add unicode of key to input_string
+                            self.input_string = (
+                                self.input_string[:self.cursor_position]
+                                + converted_temp_text
+                                + self.input_string[self.cursor_position:]
+                            )
+                            self.cursor_position += len(converted_temp_text) # Some are empty, e.g. K_UP
+                            #print(converted_temp_text)
+
+                        else:
+                            pass
 
                 else:
-                    # If no special key is pressed, add unicode of key to input_string
-                    self.input_string = (
-                        self.input_string[:self.cursor_position]
-                        + event.unicode
-                        + self.input_string[self.cursor_position:]
-                    )
-                    self.cursor_position += len(event.unicode)  # Some are empty, e.g. K_UP
+
+                    #print(event.key)
+
+                    if event.key == pl.K_BACKSPACE:
+                        self.input_string = (
+                            self.input_string[:max(self.cursor_position - 1, 0)]
+                            + self.input_string[self.cursor_position:]
+                        )
+
+                        # Subtract one from cursor_pos, but do not go below zero:
+                        self.cursor_position = max(self.cursor_position - 1, 0)
+                    elif event.key == pl.K_DELETE:
+                        self.input_string = (
+                            self.input_string[:self.cursor_position]
+                            + self.input_string[self.cursor_position + 1:]
+                        )
+
+                    elif event.key == pl.K_RETURN or event.key == 271:
+                        t=self.input_string
+                        self.clear_text()
+                        #print(t)
+                        return t
+
+                    elif event.key == pl.K_RIGHT:
+                        # Add one to cursor_pos, but do not exceed len(input_string)
+                        self.cursor_position = min(self.cursor_position + 1, len(self.input_string))
+
+                    elif event.key == pl.K_LEFT:
+                        # Subtract one from cursor_pos, but do not go below zero:
+                        self.cursor_position = max(self.cursor_position - 1, 0)
+
+                    elif event.key == pl.K_END:
+                        self.cursor_position = len(self.input_string)
+
+                    elif event.key == pl.K_HOME:
+                        self.cursor_position = 0
+
+                    elif (event.key == pl.K_SPACE and pygame.key.get_mods() & pl.KMOD_SHIFT) or event.key==0:
+                        hangul = not hangul
+                        #print('English to Hangul')
+
+                    else:
+                        if len(self.input_string)<=self.max_text:
+                            # If no special key is pressed, add unicode of key to input_string
+                            self.input_string = (
+                                self.input_string[:self.cursor_position]
+                                + event.unicode
+                                + self.input_string[self.cursor_position:]
+                            )
+                            self.cursor_position += len(event.unicode)  # Some are empty, e.g. K_UP
+                        else:
+                            pass
+
+
 
             elif event.type == pl.KEYUP:
                 # *** Because KEYUP doesn't include event.unicode, this dict is stored in such a weird way
