@@ -59,7 +59,7 @@ def nickname(screen):
     # 안내 문구
     font1 = pygame.font.Font('fonts\\aJJinbbangB.ttf', 30)
     font2 = pygame.font.Font('fonts\\aJJinbbangB.ttf', 15)
-    text1 = font1.render('닉네임을 입력하세요.', True, WHITE, None)
+    text1 = font1.render('닉네임을 입력하세요(10자).', True, WHITE, None)
     text2 = font2.render('닉네임을 결정하셨다면 ENTER키를 누르세요.', True, WHITE, None)
     textRect1 = text1.get_rect()
     textRect2 = text2.get_rect()
@@ -68,7 +68,7 @@ def nickname(screen):
     screen.blit(text1, textRect1)
     screen.blit(text2, textRect2)
     # 텍스트 입력 부분
-    textinput = pygame_textinput.TextInput('', 'fonts\\aJJinbbangB.ttf', 30, True, WHITE, WHITE)
+    textinput = pygame_textinput.TextInput('', 'fonts\\aJJinbbangB.ttf', 30, True, 9, WHITE, WHITE)
     pygame.display.update()
 
     clock = pygame.time.Clock()
@@ -161,15 +161,23 @@ class player:
 # 금액 입력 기능( ** 스레드 활용..? ** )
 def call(screen):
     clock = pygame.time.Clock()
-    textinput = pygame_textinput.TextInput('금액을 입력하세요.','fonts\\aJJinbbangB.ttf', 35, True, WHITE, WHITE)
+    pygame.draw.rect(screen, WHITE, [55, 490, 200, 55], 4)
+    textinput = pygame_textinput.TextInput('','fonts\\aJJinbbangB.ttf', 35, True, 3, WHITE, WHITE)
     while True:
+        pygame.draw.rect(screen, BLACK, [59, 494, 192, 47])
         events = pygame.event.get()
         for event in events:
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
+            # 엔터키를 누르면 닉네임 리턴
+            if event.type == pygame.KEYDOWN:
+                if event.key == K_RETURN:
+                    money = textinput.get_text()
+                    textinput.clear_text()
+                    return money
         textinput.update(events)
-        screen.blit(textinput.get_surface(), (50, 490))
+        screen.blit(textinput.get_surface(), (68, 500))
         pygame.display.update()
         clock.tick(30)
 
@@ -194,13 +202,13 @@ if __name__ == '__main__':
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
-                sys.exit()
+                sys.exit
 
         # 화면 설정
         window_deco(screen)
 
         # ** 금액 입력받는 부분 만들어야함 **
-        # call(screen)
+        money = call(screen)
 
         # 테스트!!!
         player1 = player(screen, '황새', 0, 200, 0)
@@ -212,9 +220,9 @@ if __name__ == '__main__':
         player3.info()
         player4.info()
         player1.take_my_money(10)
-        player1.take_my_money(20)
+        player1.take_my_money(money)
         player3.take_my_money(30)
-        player3.take_my_money(0)
+        player2.take_my_money(10)
         player4.take_my_money(40)
 
         # 사용자 행위
