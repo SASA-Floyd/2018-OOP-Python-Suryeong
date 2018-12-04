@@ -14,24 +14,24 @@ BLUE = (100, 149, 237)
 GREEN = (0, 128,   0)
 RED = (255,   0,   0)
 YELLOW = (255, 187,   0)
-SILVER = (192, 192, 192)
+LIGHTYELLOW = (255, 255, 108)
 
 # 사용할 기본 아이템
 '''
-rb = pygame.image.load('')
-bb = pygame.image.load('')
-wd = pygame.image.load('')
-fe = pygame.image.load('')
-cm = pygame.image.load('')
-su = pygame.image.load('')
-hw = pygame.image.load('')
+r = pygame.image.load('images\\redbrick.png')
+b = pygame.image.load('')
+w = pygame.image.load('images\\wood.png')
+i = pygame.image.load('images\\iron.png')
+c = pygame.image.load('images\\cement.png')
+s = pygame.image.load('')
+h = pygame.image.load('')
 '''
 
 # 플레이어 이미지
 p1 = pygame.image.load('images\\hwangsae.png')
 p2 = pygame.image.load('images\\sooryeong.png')
-p3 = pygame.image.load('images\\dimen_shaded.png')
-p4 = pygame.image.load('images\\sooryeong.png')
+p3 = pygame.image.load('images\\justdimen.png')
+p4 = pygame.image.load('images\\catthecat.png')
 img = [p1, p2, p3, p4]
 
 
@@ -68,13 +68,13 @@ def nickname(screen):
     screen.blit(text1, textRect1)
     screen.blit(text2, textRect2)
     # 텍스트 입력 부분
-    textinput = pygame_textinput.TextInput('', 'fonts\\aJJinbbangB.ttf', 30, True, 9, WHITE, WHITE)
+    textinput1 = pygame_textinput.TextInput('', 'fonts\\aJJinbbangB.ttf', 30, True, 9, WHITE, WHITE)
     pygame.display.update()
 
     clock = pygame.time.Clock()
 
     while True:
-        pygame.draw.rect(screen, WHITE, [380, 300, 240, 80]) # 닉네임 입력 창
+        pygame.draw.rect(screen, WHITE, [380, 300, 240, 80])    # 닉네임 입력 창
         pygame.draw.rect(screen, BLACK, [386, 306, 228, 68])
 
         events = pygame.event.get()
@@ -85,11 +85,11 @@ def nickname(screen):
             # 엔터키를 누르면 닉네임 리턴
             if event.type == pygame.KEYDOWN:
                 if event.key == K_RETURN:
-                    name = textinput.get_text()
+                    name = textinput1.get_text()
                     return name
 
-        textinput.update(events)
-        screen.blit(textinput.get_surface(), (400, 325))
+        textinput1.update(events)
+        screen.blit(textinput1.get_surface(), (400, 325))
         pygame.display.update()
         clock.tick(30)
 
@@ -99,22 +99,25 @@ def window_deco(screen):
     # 기본 화면 구획
     bgi = pygame.image.load('images\\wall1.png')    # 백그라운드 이미지
     screen.blit(bgi, (0, 0))
-    pygame.draw.rect(screen, BLACK, [660, 70, 310, 500])    # 플레이어 정보 출력 부분
+    logo = pygame.image.load('images\\logo.png')
+    screen.blit(logo, (0, 5))
+    pygame.draw.rect(screen, WHITE, [655, 75, 320, 510])    # 플레이어 정보 출력 부분
+    pygame.draw.rect(screen, BLACK, [660, 80, 310, 500])
     pygame.draw.rect(screen, BLACK, [30, 470, 600, 100])    # 금액 입력 부분
     pygame.draw.rect(screen, WHITE, [28, 468, 604, 104], 5)
-    pygame.draw.rect(screen, GREEN, [30, 70, 600, 200])     # 아이템 제시 및 기타 정보
-    pygame.draw.rect(screen, SILVER, [30, 70, 600, 200], 8)
+    pygame.draw.rect(screen, GREEN, [30, 80, 600, 200])     # 아이템 제시 및 기타 정보
+    pygame.draw.rect(screen, LIGHTYELLOW, [30, 80, 600, 200], 8)
     # 보유금액 표시 부분
     pygame.draw.rect(screen, WHITE, [410, 495, 200, 50], 4)
     font = pygame.font.Font('fonts\\aJJinbbangB.ttf', 18)
     text = font.render('보유금액', True, WHITE, None)
     screen.blit(text, [420, 510])
     # 타이머 표시 부분
-    pygame.draw.rect(screen, BLACK, [530, 150, 80, 100])
+    pygame.draw.rect(screen, BLACK, [530, 160, 80, 100])
     font = pygame.font.Font('fonts\\aJeonjaSigye.ttf', 16)
     text = font.render('TIMER', True, WHITE, None)
     textRect = text.get_rect()
-    textRect.center = (570, 160)
+    textRect.center = (570, 170)
     screen.blit(text, textRect)
 
     return screen
@@ -132,16 +135,17 @@ class player:
     # 플레이어의 정보를 띄우는 함수
     def info(self):
         # 아이템 띄울 배경 설정
-        pygame.draw.rect(self.screen, SILVER, [
-                         680, 90+120*self.turn, 270, 100])
+        pygame.draw.rect(self.screen, WHITE, [
+                         680, 100+120*self.turn, 270, 100])
+        pygame.draw.rect(self.screen, BLACK, [684, 104+120*self.turn, 262, 92])
         # 플레이어 이미지 출력
         screen.blit(img[self.turn], (30+157*self.turn, 150))
         pygame.draw.rect(self.screen, BLACK, [30 + 157 * self.turn, 375, 130, 90])
         pygame.draw.rect(self.screen, WHITE, [30 + 157 * self.turn, 375, 130, 90], 4)
         # 플레이어 이름 출력
         font = pygame.font.Font('fonts\\aJJinbbangB.ttf', 18)
-        text = font.render(self.name, True, BLACK, None)
-        self.screen.blit(text, [695, 105 + 120 * self.turn])
+        text = font.render(self.name, True, WHITE, None)
+        self.screen.blit(text, [695, 115 + 120 * self.turn])
         # 플레이어 아이템 출력
         # 플레이어 보유금액 출력
 
@@ -162,7 +166,7 @@ class player:
 def call(screen):
     clock = pygame.time.Clock()
     pygame.draw.rect(screen, WHITE, [55, 490, 200, 55], 4)
-    textinput = pygame_textinput.TextInput('','fonts\\aJJinbbangB.ttf', 35, True, 3, WHITE, WHITE)
+    textinput2 = pygame_textinput.TextInput('','fonts\\aJJinbbangB.ttf', 35, True, 3, WHITE, WHITE)
     while True:
         pygame.draw.rect(screen, BLACK, [59, 494, 192, 47])
         events = pygame.event.get()
@@ -173,11 +177,11 @@ def call(screen):
             # 엔터키를 누르면 닉네임 리턴
             if event.type == pygame.KEYDOWN:
                 if event.key == K_RETURN:
-                    money = textinput.get_text()
-                    textinput.clear_text()
+                    money = textinput2.get_text()
+                    textinput2.clear_text()
                     return money
-        textinput.update(events)
-        screen.blit(textinput.get_surface(), (68, 500))
+        textinput2.update(events)
+        screen.blit(textinput2.get_surface(), (68, 500))
         pygame.display.update()
         clock.tick(30)
 
@@ -195,8 +199,13 @@ if __name__ == '__main__':
     # 닉네임 입력 화면
     username = nickname(screen)
 
+    money = 0
+
+    # 화면 설정
+    window_deco(screen)
     while play:
         clock.tick(TARGET_FPS)
+
 
         # 이벤트 처리
         for event in pygame.event.get():
@@ -204,17 +213,11 @@ if __name__ == '__main__':
                 pygame.quit()
                 sys.exit
 
-        # 화면 설정
-        window_deco(screen)
-
-        # ** 금액 입력받는 부분 만들어야함 **
-        money = call(screen)
-
         # 테스트!!!
-        player1 = player(screen, '황새', 0, 200, 0)
+        player1 = player(screen, username, 0, 200, 0)
         player2 = player(screen, 'dimen', 1, 200, 0)
         player3 = player(screen, '수령', 2, 200, 0)
-        player4 = player(screen, '???', 3, 200, 0)
+        player4 = player(screen, '황냥이', 3, 200, 0)
         player1.info()
         player2.info()
         player3.info()
@@ -224,6 +227,9 @@ if __name__ == '__main__':
         player3.take_my_money(30)
         player2.take_my_money(10)
         player4.take_my_money(40)
+
+        # ** 금액 입력받는 부분 만들어야함 **
+        money = call(screen)
 
         # 사용자 행위
 
