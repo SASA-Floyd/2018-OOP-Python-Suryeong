@@ -34,6 +34,17 @@ item_dict = {
     "멸종위기동물 황새": 1
 }
 
+item_list = [
+    "빨간 벽돌",
+    "파란 벽돌",
+    "나무 합판",
+    "철근",
+    "시멘트",
+    "수령님의 평양냉면",
+    "멸종위기동물 황새"
+]
+
+
 print("*******BLUE BRICK*******")
 print("Waiting for players...({}/{})".format(len(client_list), NUMBER_OF_PLAYER))
 
@@ -210,7 +221,7 @@ def timeOut():
     pass
 
 
-def auctionTime():
+def auctionTime(win_dict):
 
     global current_keeper
     global call_count
@@ -241,17 +252,45 @@ def auctionTime():
     highest_bidder.update(rand_item, 10 * call_count)
     informMoney(client_list)
 
-    if existsWinner():
-        sendMessage(client_list, "{} won the game!!".format(
-            highest_bidder.nickname))
-        exit()
+    # if existsWinner():
+    #     sendMessage(client_list, "{} won the game!!".format(
+    #         highest_bidder.nickname))
+    #     exit()
 
 
-def existsWinner():
+def getWinCondition():
+
+    sample_count = random.randint(3, 5)
+    sampled_list = random.sample(item_list, sample_count)
+    win_dict = {}
+    for item in sampled_list:
+        win_dict.setdefault(item, random.randint(1, 2))
+
+    return win_dict
+
+
+def existsWinner(win_dict):
+
+    ret = []
+    win_keys = win_dict.keys()
+
     for client in client_list:
-        if "빨간 벽돌" in client.items and "파란 벽돌" in client.items:
-            return True
-    return False
+        flag = True
+
+        item_keys = client.items.keys()
+        for item in win_keys:
+            if item not in item_keys:
+                flag = False
+                break
+            else:
+                if client.items[item] < win_keys[item]:
+                    flag = False
+                    break
+
+        if flag is True:
+            ret.append(client)
+
+    return ret
 
 
 def informMoney(client_list):
@@ -274,8 +313,17 @@ def informMoney(client_list):
 def main():
 
     connection()
+    win_dict = getWinCondition()
+    print(win_dict)
+
     while item_dict:
-        auctionTime()
+        auctionTime(win_dict)
+
+    winner_list = existsWinner(win_dict)
+
+    for winner in winner_list:
+        sendMessage(client_list, "{} won the game!!".format(
+            winner.nickname))
 
 
 if __name__ == '__main__':
