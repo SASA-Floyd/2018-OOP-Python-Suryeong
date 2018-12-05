@@ -68,7 +68,8 @@ def nickname(screen):
     screen.blit(text1, textRect1)
     screen.blit(text2, textRect2)
     # 텍스트 입력 부분
-    textinput1 = pygame_textinput.TextInput('', 'fonts\\aJJinbbangB.ttf', 30, True, 9, WHITE, WHITE)
+    textinput1 = pygame_textinput.TextInput(
+        '', 'fonts\\aJJinbbangB.ttf', 30, True, 9, WHITE, WHITE)
     pygame.display.update()
 
     clock = pygame.time.Clock()
@@ -139,9 +140,11 @@ class player:
                          680, 100+120*self.turn, 270, 100])
         pygame.draw.rect(self.screen, BLACK, [684, 104+120*self.turn, 262, 92])
         # 플레이어 이미지 출력
-        screen.blit(img[self.turn], (30+157*self.turn, 150))
-        pygame.draw.rect(self.screen, BLACK, [30 + 157 * self.turn, 375, 130, 90])
-        pygame.draw.rect(self.screen, WHITE, [30 + 157 * self.turn, 375, 130, 90], 4)
+        self.screen.blit(img[self.turn], (30+157*self.turn, 150))
+        pygame.draw.rect(self.screen, BLACK, [
+                         30 + 157 * self.turn, 375, 130, 90])
+        pygame.draw.rect(self.screen, WHITE, [
+                         30 + 157 * self.turn, 375, 130, 90], 4)
         # 플레이어 이름 출력
         font = pygame.font.Font('fonts\\aJJinbbangB.ttf', 18)
         text = font.render(self.name, True, WHITE, None)
@@ -152,8 +155,10 @@ class player:
     # 플레이어가 제시한 금액을 띄우는 함수
     def take_my_money(self, money):
         # 금액 출력
-        pygame.draw.rect(self.screen, BLACK, [30 + 157 * self.turn, 375, 130, 90])
-        pygame.draw.rect(self.screen, WHITE, [30 + 157 * self.turn, 375, 130, 90], 4)
+        pygame.draw.rect(self.screen, BLACK, [
+                         30 + 157 * self.turn, 375, 130, 90])
+        pygame.draw.rect(self.screen, WHITE, [
+                         30 + 157 * self.turn, 375, 130, 90], 4)
         font = pygame.font.Font('fonts\\aJJinbbangB.ttf', 48)
         if money != 0:
             text = font.render(str(money), True, YELLOW, None)
@@ -166,7 +171,8 @@ class player:
 def call(screen):
     clock = pygame.time.Clock()
     pygame.draw.rect(screen, WHITE, [55, 490, 200, 55], 4)
-    textinput2 = pygame_textinput.TextInput('','fonts\\aJJinbbangB.ttf', 35, True, 3, WHITE, WHITE)
+    textinput2 = pygame_textinput.TextInput(
+        '', 'fonts\\aJJinbbangB.ttf', 35, True, 3, WHITE, WHITE)
     while True:
         pygame.draw.rect(screen, BLACK, [59, 494, 192, 47])
         events = pygame.event.get()
@@ -205,7 +211,6 @@ if __name__ == '__main__':
     window_deco(screen)
     while play:
         clock.tick(TARGET_FPS)
-
 
         # 이벤트 처리
         for event in pygame.event.get():

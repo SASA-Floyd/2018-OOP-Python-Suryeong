@@ -190,6 +190,7 @@ def connection():
         print("Waiting for players...({}/{})".format(len(client_list), NUMBER_OF_PLAYER))
 
     print("Game Starts!")
+    sendMessage(client_list, "start_game")
 
     for c in client_list:
         c.start()
