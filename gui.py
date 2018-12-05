@@ -188,6 +188,15 @@ def call(screen):
         pygame.display.update()
         clock.tick(30)
 
+# 타이머 출력
+def timer(screen, time):
+    font = pygame.font.Font('fonts\\aJeonjaSigye.ttf', 60)
+    text = font.render(str(time), True, RED, None)
+    textRect = text.get_rect()
+    textRect.center = (570, 220)
+    screen.blit(text, textRect)
+
+
 '''
 if __name__ == '__main__':
     TARGET_FPS = 10
@@ -234,8 +243,8 @@ if __name__ == '__main__':
         # ** 금액 입력받는 부분 만들어야함 **
         money = call(screen)
 
-        # 사용자 행위
+        timer(screen, 3)
 
         # 게임 창에 적용
         pygame.display.update()
-'''
+    '''
