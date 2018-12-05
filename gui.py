@@ -42,6 +42,16 @@ def window():
     return screen
 
 
+def waiting_player(screen):
+    screen.fill(BLACK)
+    font = pygame.font.Font('fonts\\aJJinbbangB.ttf', 20)
+    text = font.render('다른 플레이어를 기다리는 중 . . .', True, WHITE, None)
+    textRect = text.get_rect()
+    textRect.center = (500, 300)
+    screen.blit(text, textRect)
+    pygame.display.update()
+
+
 # 게임 접속할때까지 대기하는 화면
 def waiting(screen):
     screen.fill(BLACK)

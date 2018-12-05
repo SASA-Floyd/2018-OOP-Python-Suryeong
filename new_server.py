@@ -196,14 +196,25 @@ def connection():
         nick = client_socket.recv(1024)
         nick = nick.decode('utf-8')
         new_client.nickname = nick
+        new_client.send("player_number")
+        sleep(1)
+        new_client.send(str(len(client_list)))
         client_list.append(new_client)
 
         print("Waiting for players...({}/{})".format(len(client_list), NUMBER_OF_PLAYER))
 
     print("Game Starts!")
+    sleep(1)
     sendMessage(client_list, "start_game")
+    sleep(1)
+
+    nickname_list = [c.nickname for c in client_list]
 
     for c in client_list:
+        c.send("client_list")
+        sleep(1)
+        data_dict = pickle.dumps(nickname_list)
+        c.my_socket.send(data_dict)
         c.start()
 
 
