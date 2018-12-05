@@ -44,6 +44,12 @@ def window():
 
 # 게임 접속할때까지 대기하는 화면
 def waiting(screen):
+    events = pygame.event.get()
+    for event in events:
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
+
     screen.fill(BLACK)
     font = pygame.font.Font('fonts\\aJJinbbangB.ttf', 20)
     text = font.render('접속 중 . . . ', True, WHITE, None)
@@ -122,7 +128,6 @@ def window_deco(screen):
 
     return screen
 
-
 # 플레이어 정보 출력
 class player:
     def __init__(self, screen, name, turn, money, item):
@@ -139,7 +144,7 @@ class player:
                          680, 100+120*self.turn, 270, 100])
         pygame.draw.rect(self.screen, BLACK, [684, 104+120*self.turn, 262, 92])
         # 플레이어 이미지 출력
-        screen.blit(img[self.turn], (30+157*self.turn, 150))
+        self.screen.blit(img[self.turn], (30+157*self.turn, 150))
         pygame.draw.rect(self.screen, BLACK, [30 + 157 * self.turn, 375, 130, 90])
         pygame.draw.rect(self.screen, WHITE, [30 + 157 * self.turn, 375, 130, 90], 4)
         # 플레이어 이름 출력
@@ -147,7 +152,6 @@ class player:
         text = font.render(self.name, True, WHITE, None)
         self.screen.blit(text, [695, 115 + 120 * self.turn])
         # 플레이어 아이템 출력
-        # 플레이어 보유금액 출력
 
     # 플레이어가 제시한 금액을 띄우는 함수
     def take_my_money(self, money):
@@ -161,8 +165,7 @@ class player:
             textRect.center = (95+158*self.turn, 420)
             self.screen.blit(text, textRect)
 
-
-# 금액 입력 기능( ** 스레드 활용..? ** )
+# CALL
 def call(screen):
     clock = pygame.time.Clock()
     pygame.draw.rect(screen, WHITE, [55, 490, 200, 55], 4)
@@ -185,7 +188,7 @@ def call(screen):
         pygame.display.update()
         clock.tick(30)
 
-
+'''
 if __name__ == '__main__':
     TARGET_FPS = 10
     clock = pygame.time.Clock()
@@ -235,3 +238,4 @@ if __name__ == '__main__':
 
         # 게임 창에 적용
         pygame.display.update()
+'''
