@@ -42,8 +42,24 @@ def window():
     return screen
 
 
+def waiting_player(screen):
+    screen.fill(BLACK)
+    font = pygame.font.Font('fonts\\aJJinbbangB.ttf', 20)
+    text = font.render('다른 플레이어를 기다리는 중 . . .', True, WHITE, None)
+    textRect = text.get_rect()
+    textRect.center = (500, 300)
+    screen.blit(text, textRect)
+    pygame.display.update()
+
+
 # 게임 접속할때까지 대기하는 화면
 def waiting(screen):
+    events = pygame.event.get()
+    for event in events:
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
+
     screen.fill(BLACK)
     font = pygame.font.Font('fonts\\aJJinbbangB.ttf', 20)
     text = font.render('접속 중 . . . ', True, WHITE, None)
@@ -68,7 +84,8 @@ def nickname(screen):
     screen.blit(text1, textRect1)
     screen.blit(text2, textRect2)
     # 텍스트 입력 부분
-    textinput1 = pygame_textinput.TextInput('', 'fonts\\aJJinbbangB.ttf', 30, True, 9, WHITE, WHITE)
+    textinput1 = pygame_textinput.TextInput(
+        '', 'fonts\\aJJinbbangB.ttf', 30, True, 9, WHITE, WHITE)
     pygame.display.update()
 
     clock = pygame.time.Clock()
@@ -103,7 +120,7 @@ def window_deco(screen):
     screen.blit(logo, (0, 5))
     pygame.draw.rect(screen, WHITE, [655, 75, 320, 510])    # 플레이어 정보 출력 부분
     pygame.draw.rect(screen, BLACK, [660, 80, 310, 500])
-    pygame.draw.rect(screen, BLACK, [30, 470, 600, 100])    # 금액 입력 부분
+    pygame.draw.rect(screen, BLACK, [30, 470, 600, 100])    # call 이루어지는 부분
     pygame.draw.rect(screen, WHITE, [28, 468, 604, 104], 5)
     pygame.draw.rect(screen, GREEN, [30, 80, 600, 200])     # 아이템 제시 및 기타 정보
     pygame.draw.rect(screen, LIGHTYELLOW, [30, 80, 600, 200], 8)
@@ -122,7 +139,6 @@ def window_deco(screen):
 
     return screen
 
-
 # 플레이어 정보 출력
 class player:
     def __init__(self, screen, name, turn, money, item):
@@ -139,21 +155,26 @@ class player:
                          680, 100+120*self.turn, 270, 100])
         pygame.draw.rect(self.screen, BLACK, [684, 104+120*self.turn, 262, 92])
         # 플레이어 이미지 출력
-        screen.blit(img[self.turn], (30+157*self.turn, 150))
+        self.screen.blit(img[self.turn], (30+157*self.turn, 150))
         pygame.draw.rect(self.screen, BLACK, [30 + 157 * self.turn, 375, 130, 90])
         pygame.draw.rect(self.screen, WHITE, [30 + 157 * self.turn, 375, 130, 90], 4)
+        pygame.draw.rect(self.screen, BLACK, [
+                         30 + 157 * self.turn, 375, 130, 90])
+        pygame.draw.rect(self.screen, WHITE, [
+                         30 + 157 * self.turn, 375, 130, 90], 4)
         # 플레이어 이름 출력
         font = pygame.font.Font('fonts\\aJJinbbangB.ttf', 18)
         text = font.render(self.name, True, WHITE, None)
         self.screen.blit(text, [695, 115 + 120 * self.turn])
         # 플레이어 아이템 출력
-        # 플레이어 보유금액 출력
 
     # 플레이어가 제시한 금액을 띄우는 함수
     def take_my_money(self, money):
         # 금액 출력
-        pygame.draw.rect(self.screen, BLACK, [30 + 157 * self.turn, 375, 130, 90])
-        pygame.draw.rect(self.screen, WHITE, [30 + 157 * self.turn, 375, 130, 90], 4)
+        pygame.draw.rect(self.screen, BLACK, [
+                         30 + 157 * self.turn, 375, 130, 90])
+        pygame.draw.rect(self.screen, WHITE, [
+                         30 + 157 * self.turn, 375, 130, 90], 4)
         font = pygame.font.Font('fonts\\aJJinbbangB.ttf', 48)
         if money != 0:
             text = font.render(str(money), True, YELLOW, None)
@@ -161,33 +182,43 @@ class player:
             textRect.center = (95+158*self.turn, 420)
             self.screen.blit(text, textRect)
 
+# 타이머 위치에 시간 출력
+def timer(screen, time):
+    font3 = pygame.font.Font('fonts\\aJeonjaSigye.ttf', 60)
+    text = font3.render(str(time), True, RED, None)
+    textRect = text.get_rect()
+    textRect.center = (570, 220)
+    screen.blit(text, textRect)
 
-# 금액 입력 기능( ** 스레드 활용..? ** )
-def call(screen):
-    clock = pygame.time.Clock()
-    pygame.draw.rect(screen, WHITE, [55, 490, 200, 55], 4)
-    textinput2 = pygame_textinput.TextInput('','fonts\\aJJinbbangB.ttf', 35, True, 3, WHITE, WHITE)
-    while True:
-        pygame.draw.rect(screen, BLACK, [59, 494, 192, 47])
-        events = pygame.event.get()
-        for event in events:
-            if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
-            # 엔터키를 누르면 닉네임 리턴
-            if event.type == pygame.KEYDOWN:
-                if event.key == K_RETURN:
-                    money = textinput2.get_text()
-                    textinput2.clear_text()
-                    return money
-        textinput2.update(events)
-        screen.blit(textinput2.get_surface(), (68, 500))
-        pygame.display.update()
-        clock.tick(30)
+# call 버튼
+def call_button(screen):
+    mouse = pygame.mouse.get_pos()
+    click = pygame.mouse.get_pressed()
+    if 55+200 > mouse[0] > 55 and 490+55 > mouse[1] > 490:
+        pygame.draw.rect(screen, YELLOW, (55, 490, 200, 55),4)
+        pygame.draw.rect(screen, BLACK, (59, 494, 192, 47))
+        font4 = pygame.font.Font("fonts\\aJJinbbangB.ttf", 33)
+        bttext = font4.render("CALL", True, YELLOW, None)
+        bttextRect = bttext.get_rect()
+        bttextRect.center = (155, 517)
+        screen.blit(bttext, bttextRect)
+        for event in pygame.event.get():
+            if event.type == MOUSEBUTTONUP:
+                return 'CALL'
+    else:
+        pygame.draw.rect(screen, WHITE, (55, 490, 200, 55), 4)
+        pygame.draw.rect(screen, BLACK, (59, 494, 192, 47))
+        font4 = pygame.font.Font("fonts\\aJJinbbangB.ttf", 33)
+        bttext = font4.render("CALL", True, WHITE, None)
+        bttextRect = bttext.get_rect()
+        bttextRect.center = (155, 517)
+        screen.blit(bttext, bttextRect)
 
+    pygame.display.update()
 
+'''
 if __name__ == '__main__':
-    TARGET_FPS = 10
+    TARGET_FPS = 30
     clock = pygame.time.Clock()
     play = True
 
@@ -200,12 +231,12 @@ if __name__ == '__main__':
     username = nickname(screen)
 
     money = 0
+    callcnt = 0
 
     # 화면 설정
     window_deco(screen)
     while play:
         clock.tick(TARGET_FPS)
-
 
         # 이벤트 처리
         for event in pygame.event.get():
@@ -222,16 +253,18 @@ if __name__ == '__main__':
         player2.info()
         player3.info()
         player4.info()
-        player1.take_my_money(10)
-        player1.take_my_money(money)
+        player1.take_my_money(callcnt*10)
         player3.take_my_money(30)
         player2.take_my_money(10)
         player4.take_my_money(40)
 
         # ** 금액 입력받는 부분 만들어야함 **
-        money = call(screen)
+        call = call_button(screen)
+        if call == 'CALL':
+            callcnt += 1
 
-        # 사용자 행위
+        timer(screen, 3)
 
         # 게임 창에 적용
         pygame.display.update()
+'''
