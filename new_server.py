@@ -135,7 +135,7 @@ class client(threading.Thread):
             what = split_data[2]
             how = split_data[3]
 
-            if mode ==
+            # if mode ==
 
     # 입찰 요청 받고 처리
     def run(self):
@@ -282,9 +282,6 @@ def randomSelect():
     if item_dict[random_item] == 0:
         del item_dict[random_item]
     return random_item
-
-
-def blackMarket():
 
 
 def auctionTime(win_dict):

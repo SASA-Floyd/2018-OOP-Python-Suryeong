@@ -35,15 +35,13 @@ def callGUI():
     username = nickname(screen)
     mysock.send(bytes(username, 'utf-8'))
     # print(player_no)
-
     waiting_player(screen)
-
     while True:
         if game_started:
             break
 
     money = 0
-
+    callcnt = 0
     # 화면 설정
     window_deco(screen)
     while play:
@@ -54,11 +52,11 @@ def callGUI():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit
-
         # 테스트!!!
+        # player1 = player(screen, username, 0, 200, 0)
+        # player2 = player(screen, 'dimen', 1, 200, 0)
         sleep(3)
         global client_list
-        print(client_list[0], client_list[1])
         player1 = player(screen, client_list[0], 0, 200, 0)
         player2 = player(screen, client_list[1], 1, 200, 0)
         player3 = player(screen, '수령', 2, 200, 0)
@@ -67,22 +65,24 @@ def callGUI():
         player2.info()
         player3.info()
         player4.info()
-        player1.take_my_money(10)
-        player1.take_my_money(money)
+        player1.take_my_money(callcnt*10)
         player3.take_my_money(30)
         player2.take_my_money(10)
         player4.take_my_money(40)
 
         # ** 금액 입력받는 부분 만들어야함 **
-        money = call(screen)
+        call = call_button(screen)
+        if call == 'CALL':
+            callcnt += 1
 
         # 사용자 행위
 
         # 게임 창에 적용
         pygame.display.update()
 
-
 # 서버가 보내는 메시지를 수신할 함수 | Thread 활용
+
+
 def receive():
     global mysock
     while True:
@@ -109,8 +109,7 @@ def receive():
                 if(data == 'client_list'):
                     global client_list
                     data = mysock.recv(1024)
-                    client_list = pickle.loads(data).copy()
-                    print(client_list[0], client_list[1])
+                    client_list = pickle.loads(data).copy()\
 
                 print(data)
 
@@ -124,6 +123,7 @@ def receive():
 # 메시지를 수신할 스레드 생성 및 실행
 thread_recv = threading.Thread(target=receive, args=())
 thread_recv.start()
+# YOU NEED TO FIX HERE!!! MAKE IT TO A THREAD
 callGUI()
 print("Started!")
 
