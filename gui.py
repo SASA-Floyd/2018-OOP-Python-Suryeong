@@ -166,7 +166,6 @@ class player:
         font = pygame.font.Font('fonts\\aJJinbbangB.ttf', 18)
         text = font.render(self.name, True, WHITE, None)
         self.screen.blit(text, [695, 115 + 120 * self.turn])
-        # 플레이어 아이템 출력
 
     # 플레이어가 제시한 금액을 띄우는 함수
     def take_my_money(self, money):
@@ -216,7 +215,15 @@ def call_button(screen):
 
     pygame.display.update()
 
-'''
+# 보유금액 보여줌
+def show_money(screen, money):
+    font5 = pygame.font.Font("fonts\\aJJinbbangB.ttf", 25)
+    text = font5.render(str(money), True, WHITE, None)
+    textRect = text.get_rect()
+    textRect.midright = (600, 520)
+    screen.blit(text, textRect)
+
+
 if __name__ == '__main__':
     TARGET_FPS = 30
     clock = pygame.time.Clock()
@@ -230,7 +237,6 @@ if __name__ == '__main__':
     # 닉네임 입력 화면
     username = nickname(screen)
 
-    money = 0
     callcnt = 0
 
     # 화면 설정
@@ -258,7 +264,8 @@ if __name__ == '__main__':
         player2.take_my_money(10)
         player4.take_my_money(40)
 
-        # ** 금액 입력받는 부분 만들어야함 **
+        show_money(screen, 20000)
+
         call = call_button(screen)
         if call == 'CALL':
             callcnt += 1
@@ -267,4 +274,4 @@ if __name__ == '__main__':
 
         # 게임 창에 적용
         pygame.display.update()
-'''
+
