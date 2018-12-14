@@ -118,6 +118,10 @@ class client(threading.Thread):
                     client_list, "Current price is {}".format(call_count*10))
 
     def findClient(self, client_list, nick):
+        pass
+        
+    def recieveDeal(self, deal):
+        pass
 
         for client in client_list:
             if client.nickname == nick:
@@ -154,7 +158,11 @@ class client(threading.Thread):
 
 
 
+<<<<<<< HEAD
         # pragma workinghere
+=======
+            # if mode ==
+>>>>>>> 38ef1be45b0fe2b1bc313eb2ffdae16ae90fffe3
 
         # 입찰 요청 받고 처리
     def run(self):
@@ -301,9 +309,6 @@ def randomSelect():
     if item_dict[random_item] == 0:
         del item_dict[random_item]
     return random_item
-
-
-def blackMarket():
 
 
 def auctionTime(win_dict):
