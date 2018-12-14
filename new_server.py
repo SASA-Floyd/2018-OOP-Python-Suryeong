@@ -81,61 +81,61 @@ class client(threading.Thread):
         byte_msg = bytes(msg, 'utf-8')
         self.my_socket.send(byte_msg)
 
-    def auction(self):
+    # def auction(self):
 
-        global call_count
-        # 가장 최근 호출한 사용자
-        global highest_bidder
+    #     global call_count
+    #     # 가장 최근 호출한 사용자
+    #     global highest_bidder
 
-        while True:
-            try:
+    #     while True:
+    #         try:
 
-                data = self.my_socket.recv(1024)
-                data = data.decode('utf-8')
+    #             data = self.my_socket.recv(1024)
+    #             data = data.decode('utf-8')
 
-                if is_receiving is False:
-                    continue
-                if self.is_bankrupt is True:
-                    self.send("당신은 파산했습니다!")
-                    continue
+    #             if is_receiving is False:
+    #                 continue
+    #             if self.is_bankrupt is True:
+    #                 self.send("당신은 파산했습니다!")
+    #                 continue
 
-            except:
-                print("Connection with %d lost!" % (self.name))
+    #         except:
+    #             print("Connection with %d lost!" % (self.name))
 
-            if data == 'CALL':  # 콜을 받았을 경우
-                # 변수 업데이트
-                call_count += 1
-                highest_bidder = self
-                # 새 타이머 시작
-                # 타이머 이름은 호출 횟수와 같음
-                # 가장 최근에 호출된 타이머를 판별하기 위해
-                new_keeper = timekeeper(5, call_count)
-                new_keeper.start()
-                # 전체에게 메세지 보내기
-                sendMessage(client_list, "{} bid!".format(self.nickname))
-                sendMessage(
-                    client_list, "Current price is {}".format(call_count*10))
+    #         if data == 'CALL':  # 콜을 받았을 경우
+    #             # 변수 업데이트
+    #             call_count += 1
+    #             highest_bidder = self
+    #             # 새 타이머 시작
+    #             # 타이머 이름은 호출 횟수와 같음
+    #             # 가장 최근에 호출된 타이머를 판별하기 위해
+    #             new_keeper = timekeeper(5, call_count)
+    #             new_keeper.start()
+    #             # 전체에게 메세지 보내기
+    #             sendMessage(client_list, "{} bid!".format(self.nickname))
+    #             sendMessage(
+    #                 client_list, "Current price is {}".format(call_count*10))
 
-    def recieveDeal(self, deal):
-        pass
+    # def recieveDeal(self, deal):
+    #     pass
 
-    # pragma workinghere
-    def timeOut(self):
+    # # pragma workinghere
+    # def timeOut(self):
 
-        while True:
-            try:
-                data = self.my_socket.recv()
-                data = data.decode('utf-8')
-            except:
-                print("Connection with %d lost!" % (self.name))
+    #     while True:
+    #         try:
+    #             data = self.my_socket.recv()
+    #             data = data.decode('utf-8')
+    #         except:
+    #             print("Connection with %d lost!" % (self.name))
 
-            split_data = data.split(":")
-            mode = split_data[0]
-            who = split_data[1]
-            what = split_data[2]
-            how = split_data[3]
+    #         split_data = data.split(":")
+    #         mode = split_data[0]
+    #         who = split_data[1]
+    #         what = split_data[2]
+    #         how = split_data[3]
 
-            # if mode ==
+    #         # if mode ==
 
     # 입찰 요청 받고 처리
     def run(self):
