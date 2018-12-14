@@ -12,6 +12,8 @@ address = (server_ip, server_port)
 game_started = False
 player_no = 0
 client_list = []
+username = None
+
 
 # 소켓을 이용해서 서버에 접속
 mysock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -20,6 +22,7 @@ mysock.connect(address)
 
 def callGUI():
     # 스레드 종료 키
+    global username
     thread_end = 0
 
     TARGET_FPS = 10
@@ -112,6 +115,11 @@ def receive():
                     client_list = pickle.loads(data).copy()
                     print(client_list[0], client_list[1])
 
+                if data.split(':')[0] == 'accept':
+                    print(data)
+                    answer=input("거래 승낙?")
+                    
+
                 print(data)
 
         except OSError:
@@ -139,6 +147,10 @@ while True:
         break
     elif data == 'CALL':
         mysock.send(bytes(data, 'utf-8'))
+    elif data.split()[0] == "request":
+        product, price = input("어떤걸, 얼마에?").split()
+        msg = "request:{0}:{1}:{2}:NULL".format(username, product, price)
+        mysock.send(bytes(msg, 'utf-8'))
     else:
         print("To Bid, enter 'CALL'")
         continue

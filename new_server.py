@@ -94,6 +94,7 @@ class client(threading.Thread):
                 data = data.decode('utf-8')
 
                 if is_receiving is False:
+                    # pragma break로 바꾸기
                     continue
                 if self.is_bankrupt is True:
                     self.send("당신은 파산했습니다!")
@@ -106,7 +107,7 @@ class client(threading.Thread):
                 # 변수 업데이트
                 call_count += 1
                 highest_bidder = self
-                # 새 타이머 시작
+                # 새 타이머 시기
                 # 타이머 이름은 호출 횟수와 같음
                 # 가장 최근에 호출된 타이머를 판별하기 위해
                 new_keeper = timekeeper(5, call_count)
@@ -116,27 +117,46 @@ class client(threading.Thread):
                 sendMessage(
                     client_list, "Current price is {}".format(call_count*10))
 
-    def recieveDeal(self, deal):
+    def findClient(self, client_list, nick):
 
-    # pragma workinghere
-    def timeOut(self):
+        for client in client_list:
+            if client.nickname == nick:
+                return client
+
+    def recieveDeal(self, deal):
 
         while True:
             try:
-                data = self.my_socket.recv()
+                data = self.my_socket.recv(1024)
                 data = data.decode('utf-8')
             except:
                 print("Connection with %d lost!" % (self.name))
 
-            split_data = data.split(":")
-            mode = split_data[0]
-            who = split_data[1]
-            what = split_data[2]
-            how = split_data[3]
+            data_list = data.split(':')
+            mode = data[0]
+            nick = data[1]
+            what = data[2]
+            how = data[3]
+            ok = data[4]
 
-            if mode == 
+            if data[0] == 'request':
+                target_client = self.findClient(client_list, nick)
+                msg = "accept:{0}:{1}:{2}".format(self.nickname, what, how)
+                target_client.send(msg)
 
-    # 입찰 요청 받고 처리
+            elif data[0] == 'accept':
+                target_client = self.findClient(client_list, nick)
+                if ok == "y":
+                    target_client.send("거래성공")
+                    target_client.update(what, how)
+                else:
+                    target_client.send("거래실패")
+
+
+
+        # pragma workinghere
+
+        # 입찰 요청 받고 처리
     def run(self):
 
         # 가장 최근에 call한 사용자가 호출한 타이머
