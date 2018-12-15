@@ -119,9 +119,9 @@ class client(threading.Thread):
 
     def findClient(self, client_list, nick):
         pass
-        
+
     def recieveDeal(self, deal):
-        pass
+        
 
         for client in client_list:
             if client.nickname == nick:
@@ -156,13 +156,7 @@ class client(threading.Thread):
                 else:
                     target_client.send("거래실패")
 
-
-
-<<<<<<< HEAD
         # pragma workinghere
-=======
-            # if mode ==
->>>>>>> 38ef1be45b0fe2b1bc313eb2ffdae16ae90fffe3
 
         # 입찰 요청 받고 처리
     def run(self):
@@ -185,7 +179,7 @@ class client(threading.Thread):
                     continue
 
             except:
-                print("Connection with %d lost!" % (self.name))
+                print("Connection with %s lost!" % (self.name))
 
             if data == 'CALL':  # 콜을 받았을 경우
                 # 변수 업데이트
@@ -295,7 +289,7 @@ def connection():
 
     for c in client_list:
         c.send("client_list")
-        sleep(1)
+        sleep(0.01)
         data_dict = pickle.dumps(nickname_list)
         c.my_socket.send(data_dict)
         c.start()

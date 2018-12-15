@@ -49,6 +49,7 @@ def callGUI():
     window_deco(screen)
     while play:
         clock.tick(TARGET_FPS)
+        sleep(0.05)
 
         # 이벤트 처리
         for event in pygame.event.get():
@@ -58,7 +59,7 @@ def callGUI():
         # 테스트!!!
         # player1 = player(screen, username, 0, 200, 0)
         # player2 = player(screen, 'dimen', 1, 200, 0)
-        sleep(3)
+        sleep(1)
         global client_list
         player1 = player(screen, client_list[0], 0, 200, 0)
         player2 = player(screen, client_list[1], 1, 200, 0)
@@ -77,6 +78,8 @@ def callGUI():
         call = call_button(screen)
         if call == 'CALL':
             callcnt += 1
+            data = 'CALL'
+            mysock.send(bytes(data, 'utf-8'))
 
         # 사용자 행위
 
@@ -112,12 +115,14 @@ def receive():
                 if(data == 'client_list'):
                     global client_list
                     data = mysock.recv(1024)
-                    client_list = pickle.loads(data).copy()\
+                    client_list = pickle.loads(data).copy()
 
-                if data.split(':')[0] == 'accept':
-                    print(data)
-                    answer=input("거래 승낙?")
-                    
+                # try:
+                #     if data.split(':')[0] == 'accept':
+                #         print(data)
+                #         answer = input("거래 승낙?")
+                # except:
+                #     print(data)
 
                 print(data)
 
@@ -128,6 +133,9 @@ def receive():
     mysock.close()
 
 
+
+
+
 # 메시지를 수신할 스레드 생성 및 실행
 thread_recv = threading.Thread(target=receive, args=())
 thread_recv.start()
@@ -136,7 +144,6 @@ callGUI()
 print("Started!")
 
 
-# 메시지 전송 및 판단
 while True:
     try:
         data = input('>')
@@ -155,6 +162,7 @@ while True:
         print("To Bid, enter 'CALL'")
         continue
 
+# 메시지 전송 및 판단
 # 서버 접속 종료
 mysock.close()
 print("disconneted")
