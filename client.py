@@ -12,7 +12,15 @@ address = (server_ip, server_port)
 game_started = False
 player_no = 0
 client_list = []
+client_dict = {}
 username = None
+START_MONEY = 300
+
+
+current_time = 0
+is_bought = False
+
+
 
 
 # 소켓을 이용해서 서버에 접속
@@ -20,9 +28,26 @@ mysock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 mysock.connect(address)
 
 
+class Client:
+    
+    def __init__(self, name):
+        
+        self.name = name
+        self.money = START_MONEY
+        self.item_list = []
+        
+    def update(self, item, price):
+        
+        self.money -= price
+        self.item_list.append(item)
+    
+
+
+
 def callGUI():
     # 스레드 종료 키
     global username
+    global client_list
     thread_end = 0
 
     TARGET_FPS = 10
@@ -48,9 +73,14 @@ def callGUI():
     # 화면 설정
     window_deco(screen)
     sleep(2)
+
+    for client_name in client_list:
+        new_client = Client(client_name)
+        client_dict.setdefault(client_name, new_client)
+
     while play:
         clock.tick(TARGET_FPS)
-        sleep(0.05)
+        sleep(0.01)
 
         # 이벤트 처리
         for event in pygame.event.get():
@@ -60,7 +90,6 @@ def callGUI():
         # 테스트!!!
         # player1 = player(screen, username, 0, 200, 0)
         # player2 = player(screen, 'dimen', 1, 200, 0)
-        global client_list
         player1 = player(screen, client_list[0], 0, 200, 0)
         player2 = player(screen, client_list[1], 1, 200, 0)
         player3 = player(screen, '수령', 2, 200, 0)
@@ -90,7 +119,10 @@ def callGUI():
 
 
 def receive():
+    
     global mysock
+    global current_time
+
     while True:
         try:
             data = mysock.recv(1024)
@@ -101,6 +133,8 @@ def receive():
 
             except:
                 data = data.decode('UTF-8')
+                if data.isdigit():
+                    current_time = int(data)
                 if(data == 'player_number'):
                     global player_no
                     player_no = int(mysock.recv(1024).decode('UTF-8'))
