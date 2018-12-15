@@ -32,12 +32,12 @@ def callGUI():
     screen = window()
 
     # 접속 대기 화면
-    waiting(screen)
+    # waiting(screen)
 
     # 닉네임 입력 화면
     username = nickname(screen)
     mysock.send(bytes(username, 'utf-8'))
-    # print(player_no)
+    print(player_no)
     waiting_player(screen)
     while True:
         if game_started:
@@ -140,7 +140,8 @@ def receive():
 thread_recv = threading.Thread(target=receive, args=())
 thread_recv.start()
 # YOU NEED TO FIX HERE!!! MAKE IT TO A THREAD
-callGUI()
+thread_gui = threading.Thread(target=callGUI, args=())
+thread_gui.start()
 print("Started!")
 
 
