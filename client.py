@@ -47,6 +47,7 @@ def callGUI():
     callcnt = 0
     # 화면 설정
     window_deco(screen)
+    sleep(2)
     while play:
         clock.tick(TARGET_FPS)
         sleep(0.05)
@@ -59,7 +60,6 @@ def callGUI():
         # 테스트!!!
         # player1 = player(screen, username, 0, 200, 0)
         # player2 = player(screen, 'dimen', 1, 200, 0)
-        sleep(1)
         global client_list
         player1 = player(screen, client_list[0], 0, 200, 0)
         player2 = player(screen, client_list[1], 1, 200, 0)
@@ -140,8 +140,7 @@ def receive():
 thread_recv = threading.Thread(target=receive, args=())
 thread_recv.start()
 # YOU NEED TO FIX HERE!!! MAKE IT TO A THREAD
-thread_gui = threading.Thread(target=callGUI, args=())
-thread_gui.start()
+callGUI()
 print("Started!")
 
 
