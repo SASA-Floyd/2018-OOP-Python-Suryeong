@@ -202,7 +202,7 @@ def call_button(screen):
     mouse = pygame.mouse.get_pos()
 
     if 55+200 > mouse[0] > 55 and 490+55 > mouse[1] > 490:
-        print("==============")
+        # print("==============")
         click = pygame.mouse.get_pressed()
         pygame.draw.rect(screen, YELLOW, (55, 490, 200, 55), 4)
         pygame.draw.rect(screen, BLACK, (59, 494, 192, 47))
@@ -216,10 +216,10 @@ def call_button(screen):
         #     if event.type == pygame.MOUSEBUTTONDOWN:
         #         return 'CALL'
         if click[0] == 1:
-            print("++++++++++++++")
+            # print("++++++++++++++")
             return 'CALL'
     else:
-        print("^^^^^^^^^^^^^^^^^^")
+        # print("^^^^^^^^^^^^^^^^^^")
         pygame.draw.rect(screen, WHITE, (55, 490, 200, 55), 4)
         pygame.draw.rect(screen, BLACK, (59, 494, 192, 47))
         font4 = pygame.font.Font("fonts\\aJJinbbangB.ttf", 33)

@@ -17,11 +17,8 @@ username = None
 START_MONEY = 300
 
 
-current_time = 0
+current_time = 5
 is_bought = False
-
-
-
 
 # 소켓을 이용해서 서버에 접속
 mysock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -29,19 +26,17 @@ mysock.connect(address)
 
 
 class Client:
-    
+
     def __init__(self, name):
-        
+
         self.name = name
         self.money = START_MONEY
         self.item_list = []
-        
+
     def update(self, item, price):
-        
+
         self.money -= price
         self.item_list.append(item)
-    
-
 
 
 def callGUI():
@@ -80,6 +75,7 @@ def callGUI():
 
     while play:
         clock.tick(TARGET_FPS)
+        timer(screen, current_time)
         sleep(0.01)
 
         # 이벤트 처리
@@ -119,7 +115,7 @@ def callGUI():
 
 
 def receive():
-    
+
     global mysock
     global current_time
 
@@ -165,8 +161,6 @@ def receive():
             break
 
     mysock.close()
-
-
 
 
 
