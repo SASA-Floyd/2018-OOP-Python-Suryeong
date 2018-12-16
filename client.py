@@ -16,7 +16,7 @@ player_list = []
 class_list = []
 username = None
 START_MONEY = 300
-
+screen = 0
 
 current_time = 5
 current_price = 0
@@ -49,6 +49,7 @@ def callGUI():
     global username
     global client_list
     global player_list
+    global screen
     thread_end = 0
 
     TARGET_FPS = 10
@@ -165,7 +166,9 @@ def receive():
                 elif data.startswith('b'):
                     current_price += 10
 
-                # elif data.startswith('v'):
+                elif data.startswith('v'):
+                    turn = int(data[1:])
+                    crown_for_winner(screen, turn)
 
                 elif data.startswith('@'):
                     print("====================")
@@ -188,6 +191,17 @@ def receive():
                     global client_list
                     data = mysock.recv(1024)
                     client_list = pickle.loads(data).copy()
+
+                elif data.startswith('r'):
+                    data = mysock.recv(1024)
+                    data_dict = pickle.loads(data)
+                    global screen
+                    message(screen, "Required items are...")
+                    sleep(2)
+                    for key in data_dict:
+                        message(screen, "{}: {} Required".format(
+                            key, data_dict[key]))
+                        sleep(2)
 
                 # try:
                 #     if data.split(':')[0] == 'accept':

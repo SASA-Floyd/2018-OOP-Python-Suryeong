@@ -59,6 +59,7 @@ class client(threading.Thread):
         self.money = money
         self.nickname = None
         self.items = {}
+        self.turn = 0
         self.name = self.my_socket.fileno()
         self.is_bankrupt = False
 
@@ -255,6 +256,7 @@ def connection():
         new_client.send("player_number")
         sleep(1)
         new_client.send(str(len(client_list)))
+        new_client.turn = len(client_list)
         client_list.append(new_client)
 
         print("Waiting for players...({}/{})".format(len(client_list), NUMBER_OF_PLAYER))
@@ -383,6 +385,12 @@ def main():
     win_dict = getWinCondition()
     print(win_dict)
 
+    for c in client_list:
+        c.send("required")
+        sleep(1)
+        data_dict = pickle.dumps(win_dict)
+        c.my_socket.send(data_dict)
+
     while item_dict:
         auctionTime(win_dict)
 
@@ -391,7 +399,7 @@ def main():
     for winner in winner_list:
         sendMessage(client_list, "@{} won the game!!".format(
             winner.nickname))
-        sendMessage(client_list, "v{}".format(winner.nickname))
+        sendMessage(client_list, "v{}".format(winner.turn))
 
 
 if __name__ == '__main__':
