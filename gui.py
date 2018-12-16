@@ -140,6 +140,8 @@ def window_deco(screen):
     return screen
 
 # 플레이어 정보 출력
+
+
 class player:
     def __init__(self, screen, name, turn, money, item):
         self.name = name
@@ -156,8 +158,10 @@ class player:
         pygame.draw.rect(self.screen, BLACK, [684, 104+120*self.turn, 262, 92])
         # 플레이어 이미지 출력
         self.screen.blit(img[self.turn], (30+157*self.turn, 150))
-        pygame.draw.rect(self.screen, BLACK, [30 + 157 * self.turn, 375, 130, 90])
-        pygame.draw.rect(self.screen, WHITE, [30 + 157 * self.turn, 375, 130, 90], 4)
+        pygame.draw.rect(self.screen, BLACK, [
+                         30 + 157 * self.turn, 375, 130, 90])
+        pygame.draw.rect(self.screen, WHITE, [
+                         30 + 157 * self.turn, 375, 130, 90], 4)
         pygame.draw.rect(self.screen, BLACK, [
                          30 + 157 * self.turn, 375, 130, 90])
         pygame.draw.rect(self.screen, WHITE, [
@@ -182,6 +186,8 @@ class player:
             self.screen.blit(text, textRect)
 
 # 타이머 위치에 시간 출력
+
+
 def timer(screen, time):
     font3 = pygame.font.Font('fonts\\aJeonjaSigye.ttf', 60)
     text = font3.render(str(time), True, RED, None)
@@ -190,21 +196,30 @@ def timer(screen, time):
     screen.blit(text, textRect)
 
 # call 버튼
+
+
 def call_button(screen):
     mouse = pygame.mouse.get_pos()
-    click = pygame.mouse.get_pressed()
+
     if 55+200 > mouse[0] > 55 and 490+55 > mouse[1] > 490:
-        pygame.draw.rect(screen, YELLOW, (55, 490, 200, 55),4)
+        print("==============")
+        click = pygame.mouse.get_pressed()
+        pygame.draw.rect(screen, YELLOW, (55, 490, 200, 55), 4)
         pygame.draw.rect(screen, BLACK, (59, 494, 192, 47))
         font4 = pygame.font.Font("fonts\\aJJinbbangB.ttf", 33)
         bttext = font4.render("CALL", True, YELLOW, None)
         bttextRect = bttext.get_rect()
         bttextRect.center = (155, 517)
         screen.blit(bttext, bttextRect)
-        for event in pygame.event.get():
-            if event.type == MOUSEBUTTONUP:
-                return 'CALL'
+        # for event in pygame.event.get():
+        #     print("+++++++++++++++")
+        #     if event.type == pygame.MOUSEBUTTONDOWN:
+        #         return 'CALL'
+        if click[0] == 1:
+            print("++++++++++++++")
+            return 'CALL'
     else:
+        print("^^^^^^^^^^^^^^^^^^")
         pygame.draw.rect(screen, WHITE, (55, 490, 200, 55), 4)
         pygame.draw.rect(screen, BLACK, (59, 494, 192, 47))
         font4 = pygame.font.Font("fonts\\aJJinbbangB.ttf", 33)
@@ -216,6 +231,8 @@ def call_button(screen):
     pygame.display.update()
 
 # 보유금액 보여줌
+
+
 def show_money(screen, money):
     font5 = pygame.font.Font("fonts\\aJJinbbangB.ttf", 25)
     text = font5.render(str(money), True, WHITE, None)
@@ -274,4 +291,3 @@ if __name__ == '__main__':
 
         # 게임 창에 적용
         pygame.display.update()
-
