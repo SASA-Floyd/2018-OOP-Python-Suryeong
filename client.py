@@ -140,6 +140,7 @@ def receive():
     global mysock
     global current_time
     global current_price
+    global screen
     global display_message
 
     while True:
@@ -195,7 +196,6 @@ def receive():
                 elif data.startswith('r'):
                     data = mysock.recv(1024)
                     data_dict = pickle.loads(data)
-                    global screen
                     message(screen, "Required items are...")
                     sleep(2)
                     for key in data_dict:

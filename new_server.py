@@ -300,9 +300,10 @@ def auctionTime(win_dict):
         client = copy.copy(client)
 
     rand_item = randomSelect()
-    sendMessage(client_list, "@This round's item is \n{}\n".format(rand_item))
-    sleep(2)
-    sendMessage(client_list, "@Bidding Starts Now!")
+    sendMessage(client_list, '''@This round's item is \n{}\n
+                                Bidding Starts Now!!'''.format(rand_item))
+    # sleep(3)
+    # sendMessage(client_list, "@Bidding Starts Now!")
 
     flag = threading.Thread(target=flagkeeper)
     flag.start()
@@ -370,7 +371,7 @@ def informMoney(client_list):
         client.send("Inventory: {}\n".format(client.items))
 
         # 다른 형식의 데이터가 넘어가기 때문에 클라이언트에서 새 recv가 열릴 때까지 대기
-        sleep(1)
+        sleep(0.01)
 
         # 모든 사람들의 아이템 dict를 피클로 보내기(gui용)
         data_dict = pickle.dumps(item_dict)
@@ -386,7 +387,7 @@ def main():
 
     for c in client_list:
         c.send("required")
-        sleep(1)
+        # sleep(0.01)
         data_dict = pickle.dumps(win_dict)
         c.my_socket.send(data_dict)
 
