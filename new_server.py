@@ -25,23 +25,23 @@ START_MONEY = 300
 
 # "Item name": Available Number
 item_dict = {
-    "빨간 벽돌": 6,
-    "파란 벽돌": 1,
-    "나무 합판": 3,
-    "철근": 2,
-    "시멘트": 3,
-    "수령님의 평양냉면": 1,
-    "멸종위기동물 황새": 1
+    "빨간 벽돌": 2,
+    # "파란 벽돌": 1,
+    # "나무 합판": 3,
+    # "철근": 2,
+    # "시멘트": 3,
+    # "수령님의 평양냉면": 1,
+    # "멸종위기동물 황새": 1
 }
 
 item_list = [
     "빨간 벽돌",
-    "파란 벽돌",
-    "나무 합판",
-    "철근",
-    "시멘트",
-    "수령님의 평양냉면",
-    "멸종위기동물 황새"
+    #"파란 벽돌",
+    #"나무 합판",
+    # "철근",
+    # "시멘트",
+    #"수령님의 평양냉면",
+    #"멸종위기동물 황새"
 ]
 
 
@@ -274,6 +274,7 @@ def connection():
         data_dict = pickle.dumps(nickname_list)
         c.my_socket.send(data_dict)
         c.start()
+    sleep(0.01)
 
 
 # 경매 물품 하나를 랜덤으로 선택 (반환값: 아이템 이름 문자열)
@@ -300,10 +301,8 @@ def auctionTime(win_dict):
 
     rand_item = randomSelect()
     sendMessage(client_list, "@This round's item is \n{}\n".format(rand_item))
-    sleep(3)
-    sendMessage(client_list, "@Bidding Starts...")
     sleep(2)
-    sendMessage(client_list, "@now!")
+    sendMessage(client_list, "@Bidding Starts Now!")
 
     flag = threading.Thread(target=flagkeeper)
     flag.start()
@@ -329,7 +328,7 @@ def auctionTime(win_dict):
 
 def getWinCondition():
 
-    sample_count = random.randint(3, 5)
+    sample_count = random.randint(1, 1)
     sampled_list = random.sample(item_list, sample_count)
     win_dict = {}
     for item in sampled_list:
@@ -341,18 +340,18 @@ def getWinCondition():
 def existsWinner(win_dict):
 
     ret = []
-    win_keys = win_dict.keys()
+    win_keys = list(win_dict.keys())
 
     for client in client_list:
         flag = True
 
-        item_keys = client.items.keys()
+        item_keys = list(client.items.keys())
         for item in win_keys:
             if item not in item_keys:
                 flag = False
                 break
             else:
-                if client.items[item] < win_keys[item]:
+                if client.items[item] < win_dict[item]:
                     flag = False
                     break
 
