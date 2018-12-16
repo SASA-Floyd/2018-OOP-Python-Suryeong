@@ -297,10 +297,10 @@ def auctionTime(win_dict):
         client = copy.copy(client)
 
     rand_item = randomSelect()
-    sendMessage(client_list, "@This round's item is {}\n".format(rand_item))
-    sleep(0.1)
+    sendMessage(client_list, "@This round's item is \n{}\n".format(rand_item))
+    sleep(3)
     sendMessage(client_list, "@Bidding Starts...")
-    sleep(1)
+    sleep(2)
     sendMessage(client_list, "@now!")
 
     flag = threading.Thread(target=flagkeeper)
