@@ -302,9 +302,8 @@ def call_button(screen):
     pygame.display.update()
 
 # 보유금액 보여줌
-
-
 def show_money(screen, money):
+    pygame.draw.rect(screen, BLACK, [455, 500, 140, 40])
     font5 = pygame.font.Font("fonts\\aJJinbbangB.ttf", 25)
     text = font5.render(str(money), True, WHITE, None)
     textRect = text.get_rect()
@@ -312,15 +311,11 @@ def show_money(screen, money):
     screen.blit(text, textRect)
 
 # 우승자 티내기
-
-
 def crown_for_winner(screen, turn):
     crown = pygame.image.load("images\\crown.png")
     screen.blit(crown, (35 + 157 * turn, 260))
 
 # 전체 공지 칠판에 띄우기
-
-
 def messege(screen, text):
     textlist = []
     pygame.draw.rect(screen, GREEN, [40, 90, 490, 150])
@@ -392,7 +387,8 @@ if __name__ == '__main__':
         player2.take_my_money(10)
         player4.take_my_money(40)
 
-        show_money(screen, 20000)
+        show_money(screen, 200)
+
 
         crown_for_winner(screen, 3)
 
