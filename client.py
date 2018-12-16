@@ -101,18 +101,22 @@ def callGUI():
         player4 = player(screen, '황냥이', 3, 200, {})
         player_list = [player1, player2, player3, player4]
 
-        player1.info()
-        player2.info()
-        player3.info()
-        player4.info()
+        for i in range(4):
+            c = class_list[i]
+            player_list[i].item = c.item_list
         # player1.take_my_money(callcnt*10)
         # player3.take_my_money(30)
         # player2.take_my_money(10)
         # player4.take_my_money(40)
+        player1.info()
+        player2.info()
+        player3.info()
+        player4.info()
+        
         for i in range(4):
             c = class_list[i]
             player_list[i].take_my_money(c.money)
-            player_list[i].item = c.item_list
+
             # ** 금액 입력받는 부분 만들어야함 **
         call = call_button(screen)
         if call == 'CALL':
