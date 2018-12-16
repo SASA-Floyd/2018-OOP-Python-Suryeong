@@ -111,7 +111,16 @@ def nickname(screen):
         clock.tick(30)
 
 
+def display_price(screen, price):
+
+    pygame.draw.rect(screen, WHITE, [410, 495, 200, 50], 4)
+    font = pygame.font.Font('fonts\\aJJinbbangB.ttf', 18)
+    text = font.render('가격: ' + str(price), True, WHITE, None)
+    screen.blit(text, [420, 510])
+
 # 플레이 화면 구성
+
+
 def window_deco(screen):
     # 기본 화면 구획
     bgi = pygame.image.load('images\\wall1.png')    # 백그라운드 이미지
@@ -127,7 +136,7 @@ def window_deco(screen):
     # 보유금액 표시 부분
     pygame.draw.rect(screen, WHITE, [410, 495, 200, 50], 4)
     font = pygame.font.Font('fonts\\aJJinbbangB.ttf', 18)
-    text = font.render('보유금액', True, WHITE, None)
+    text = font.render('가격:', True, WHITE, None)
     screen.blit(text, [420, 510])
     # 타이머 표시 부분
     pygame.draw.rect(screen, BLACK, [530, 100, 80, 100])
@@ -227,6 +236,8 @@ def call_button(screen):
     pygame.display.update()
 
 # 보유금액 보여줌
+
+
 def show_money(screen, money):
     font5 = pygame.font.Font("fonts\\aJJinbbangB.ttf", 25)
     text = font5.render(str(money), True, WHITE, None)
@@ -235,11 +246,15 @@ def show_money(screen, money):
     screen.blit(text, textRect)
 
 # 우승자 티내기
+
+
 def crown_for_winner(screen, turn):
     crown = pygame.image.load("images\\crown.png")
     screen.blit(crown, (35 + 157 * turn, 260))
 
 # 전체 공지 칠판에 띄우기
+
+
 def messege(screen, text):
     textlist = []
     pygame.draw.rect(screen, GREEN, [40, 90, 490, 150])
@@ -288,7 +303,6 @@ if __name__ == '__main__':
             callcnt += 1
 
         timer(screen, 3)
-
 
         # 테스트!!!
         player1 = player(screen, username, 0, 200, 0)

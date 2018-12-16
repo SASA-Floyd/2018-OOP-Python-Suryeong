@@ -90,6 +90,8 @@ def callGUI():
         # 테스트!!!
         # player1 = player(screen, username, 0, 200, 0)
         # player2 = player(screen, 'dimen', 1, 200, 0)
+        display_price(screen,current_price)
+
         player1 = player(screen, client_list[0], 0, 200, 0)
         player2 = player(screen, client_list[1], 1, 200, 0)
         player3 = player(screen, '수령', 2, 200, 0)
