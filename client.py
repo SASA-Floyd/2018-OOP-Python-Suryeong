@@ -12,13 +12,14 @@ address = (server_ip, server_port)
 game_started = False
 player_no = 0
 client_list = []
-client_dict = {}
+player_list = []
+class_list = []
 username = None
 START_MONEY = 300
 
 
 current_time = 5
-is_bought = False
+current_price = 0
 
 # 소켓을 이용해서 서버에 접속
 mysock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -43,6 +44,7 @@ def callGUI():
     # 스레드 종료 키
     global username
     global client_list
+    global player_list
     thread_end = 0
 
     TARGET_FPS = 10
@@ -68,10 +70,12 @@ def callGUI():
     # 화면 설정
     window_deco(screen)
     sleep(2)
+    client_list.append('수령')
+    client_list.append('황냥이')
 
     for client_name in client_list:
         new_client = Client(client_name)
-        client_dict.setdefault(client_name, new_client)
+        class_list.append(new_client)
 
     while play:
         clock.tick(TARGET_FPS)
@@ -90,16 +94,20 @@ def callGUI():
         player2 = player(screen, client_list[1], 1, 200, 0)
         player3 = player(screen, '수령', 2, 200, 0)
         player4 = player(screen, '황냥이', 3, 200, 0)
+        player_list = [player1, player2, player3, player4]
+
         player1.info()
         player2.info()
         player3.info()
         player4.info()
-        player1.take_my_money(callcnt*10)
-        player3.take_my_money(30)
-        player2.take_my_money(10)
-        player4.take_my_money(40)
-
-        # ** 금액 입력받는 부분 만들어야함 **
+        # player1.take_my_money(callcnt*10)
+        # player3.take_my_money(30)
+        # player2.take_my_money(10)
+        # player4.take_my_money(40)
+        for i in range(4):
+            c = class_list[i]
+            player_list[i].take_my_money(c.money)
+            # ** 금액 입력받는 부분 만들어야함 **
         call = call_button(screen)
         if call == 'CALL':
             callcnt += 1
@@ -118,6 +126,7 @@ def receive():
 
     global mysock
     global current_time
+    global current_price
 
     while True:
         try:
@@ -131,18 +140,29 @@ def receive():
                 data = data.decode('UTF-8')
                 if data.isdigit():
                     current_time = int(data)
-                if(data == 'player_number'):
+                elif data.startswith('w'):
+                    data = data.split()
+                    person = data[1]
+                    item = data[3]
+                    for player in class_list:
+                        if player.name == person:
+                            player.update(item, current_price)
+
+                elif data.startswith('b'):
+                    current_price += 10
+
+                elif(data == 'player_number'):
                     global player_no
                     player_no = int(mysock.recv(1024).decode('UTF-8'))
 
-                if(data == 'end'):
+                elif(data == 'end'):
                     mysock.send(bytes("end", 'UTF-8'))
 
-                if(data == 'start_game'):
+                elif(data == 'start_game'):
                     global game_started
                     game_started = True
 
-                if(data == 'client_list'):
+                elif(data == 'client_list'):
                     global client_list
                     data = mysock.recv(1024)
                     client_list = pickle.loads(data).copy()
