@@ -403,7 +403,7 @@ if __name__ == '__main__':
         player2.take_my_money(10)
         player4.take_my_money(40)
 
-        show_money(screen, 200+callcnt*10)
+        display_price(screen, 200+callcnt*10)
 
         crown_for_winner(screen, 3)
 

@@ -73,7 +73,7 @@ def callGUI():
     callcnt = 0
     # 화면 설정
     window_deco(screen)
-    sleep(1)
+    sleep(2)
     client_list.append('수령')
     client_list.append('황냥이')
 
@@ -154,7 +154,7 @@ def receive():
                 if data.isdigit():
                     current_time = int(data)
                 elif data.startswith('w'):
-                    data = data.split()
+                    data = data.split(':')
                     person = data[1]
                     item = data[3]
                     for player in class_list:
