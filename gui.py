@@ -207,6 +207,7 @@ def timer(screen, time):
 def call_button(screen):
     mouse = pygame.mouse.get_pos()
     if 55+200 > mouse[0] > 55 and 490+55 > mouse[1] > 490:
+        pygame.draw.rect(screen, YELLOW, (55, 490, 200, 55),4)
         print("==============")
         click = pygame.mouse.get_pressed()
         pygame.draw.rect(screen, YELLOW, (55, 490, 200, 55), 4)
