@@ -189,12 +189,7 @@ class player:
 
 
 def timer(screen, time):
-    pygame.draw.rect(screen, BLACK, [530, 100, 80, 100])
-    font = pygame.font.Font('fonts\\aJeonjaSigye.ttf', 16)
-    text = font.render('TIMER', True, WHITE, None)
-    textRect = text.get_rect()
-    textRect.center = (570, 110)
-    screen.blit(text, textRect)
+    pygame.draw.rect(screen, BLACK, [530, 120, 80, 80])
     font3 = pygame.font.Font('fonts\\aJeonjaSigye.ttf', 60)
     text = font3.render(str(time), True, RED, None)
     textRect = text.get_rect()
@@ -232,8 +227,6 @@ def call_button(screen):
     pygame.display.update()
 
 # 보유금액 보여줌
-
-
 def show_money(screen, money):
     font5 = pygame.font.Font("fonts\\aJJinbbangB.ttf", 25)
     text = font5.render(str(money), True, WHITE, None)
@@ -250,7 +243,7 @@ def crown_for_winner(screen, turn):
 def messege(screen, text):
     textlist = []
     pygame.draw.rect(screen, GREEN, [40, 90, 490, 150])
-    while len(text) > 25:
+    if len(text) > 25:
         textlist.append(text[0:25])
         textlist.append(text[25:])
     font6 = pygame.font.Font("fonts\\aJJinbbangB.ttf", 25)
@@ -288,13 +281,11 @@ if __name__ == '__main__':
                 sys.exit
 
         text = '안녕하세요, 참가자 여러분! test입니다. 하하하하하하하하'
-        text2 = '으아'
         messege(screen, text)
 
         call = call_button(screen)
         if call == 'CALL':
             callcnt += 1
-            messege(screen, text2)
 
         timer(screen, 3)
 
