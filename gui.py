@@ -17,15 +17,13 @@ YELLOW = (255, 187,   0)
 LIGHTYELLOW = (255, 255, 108)
 
 # 사용할 기본 아이템
-'''
 r = pygame.image.load('images\\redbrick.png')
-b = pygame.image.load('')
+b = pygame.image.load('images\\bluebrick.png')
 w = pygame.image.load('images\\wood.png')
 i = pygame.image.load('images\\iron.png')
 c = pygame.image.load('images\\cement.png')
-s = pygame.image.load('')
-h = pygame.image.load('')
-'''
+s = pygame.image.load('images\\pyeongyang.png')
+h = pygame.image.load('images\\hwangbird.png')
 
 # 플레이어 이미지
 p1 = pygame.image.load('images\\hwangsae.png')
@@ -136,12 +134,10 @@ def window_deco(screen):
     textRect = text.get_rect()
     textRect.center = (570, 110)
     screen.blit(text, textRect)
-
     return screen
 
+
 # 플레이어 정보 출력
-
-
 class player:
     def __init__(self, screen, name, turn, money, item):
         self.name = name
@@ -171,6 +167,80 @@ class player:
         text = font.render(self.name, True, WHITE, None)
         self.screen.blit(text, [695, 115 + 120 * self.turn])
 
+        # 플레이어 아이템 출력
+        cnt = 0
+        if '빨간 벽돌' in self.item:
+            value = self.item.get('빨간 벽돌')
+            j = 0
+            while j < value:
+                if cnt+j >= 10:
+                    self.screen.blit(r, (695 + (cnt+j-10)*25 + 25*j, 165 + 120 * self.turn))
+                else:
+                    self.screen.blit(r, (695 + (cnt+j)*25, 140 + 120 * self.turn))
+                j += 1
+            cnt += value
+        if '파란 벽돌' in self.item:
+            value = self.item.get('파란 벽돌')
+            j = 0
+            while j < value:
+                if cnt+j >= 10:
+                    self.screen.blit(b, (695 + (cnt+j-10)*25 + 25*j, 165 + 120 * self.turn))
+                else:
+                    self.screen.blit(b, (695 + (cnt+j)*25, 140 + 120 * self.turn))
+                j += 1
+            cnt += value
+        if '나무 합판' in self.item:
+            value = self.item.get('나무 합판')
+            j = 0
+            while j < value:
+                if cnt+j >= 10:
+                    self.screen.blit(w, (695 + (cnt+j-10)*25 + 25*j, 165 + 120 * self.turn))
+                else:
+                    self.screen.blit(w, (695 + (cnt+j)*25, 140 + 120 * self.turn))
+                j += 1
+            cnt += value
+        if '철근' in self.item:
+            value = self.item.get('철근')
+            j = 0
+            while j < value:
+                if cnt+j >= 10:
+                    self.screen.blit(i, (695 + (cnt+j-10)*25 + 25*j, 165 + 120 * self.turn))
+                else:
+                    self.screen.blit(i, (695 + (cnt+j)*25, 140 + 120 * self.turn))
+                j += 1
+            cnt += value
+        if '시멘트' in self.item:
+            value = self.item.get('시멘트')
+            j = 0
+            while j < value:
+                if cnt+j >= 10:
+                    self.screen.blit(c, (695 + (cnt+j-10)*25 + 25*j, 165 + 120 * self.turn))
+                else:
+                    self.screen.blit(c, (695 + (cnt+j)*25, 140 + 120 * self.turn))
+                j += 1
+            cnt += value
+        if '수령님의 평양냉면' in self.item:
+            value = self.item.get('수령님의 평양냉면')
+            j = 0
+            while j < value:
+                if cnt+j >= 10:
+                    self.screen.blit(s, (695 + (cnt+j-10)*25 + 25*j, 165 + 120 * self.turn))
+                else:
+                    self.screen.blit(s, (695 + (cnt+j)*25, 140 + 120 * self.turn))
+                j += 1
+            cnt += value
+        if '멸종위기동물 황새' in self.item:
+            value = self.item.get('멸종위기동물 황새')
+            j = 0
+            while j < value:
+                if cnt+j >= 10:
+                    self.screen.blit(h, (695 + (cnt+j-10)*25 + 25*j, 165 + 120 * self.turn))
+                else:
+                    self.screen.blit(h, (695 + (cnt+j)*25, 140 + 120 * self.turn))
+                j += 1
+            cnt += value
+
+
     # 플레이어가 제시한 금액을 띄우는 함수
     def take_my_money(self, money):
         # 금액 출력
@@ -186,8 +256,6 @@ class player:
             self.screen.blit(text, textRect)
 
 # 타이머 위치에 시간 출력
-
-
 def timer(screen, time):
     pygame.draw.rect(screen, BLACK, [530, 120, 80, 80])
     font3 = pygame.font.Font('fonts\\aJeonjaSigye.ttf', 60)
@@ -197,8 +265,6 @@ def timer(screen, time):
     screen.blit(text, textRect)
 
 # call 버튼
-
-
 def call_button(screen):
     mouse = pygame.mouse.get_pos()
     if 55+200 > mouse[0] > 55 and 490+55 > mouse[1] > 490:
@@ -292,10 +358,18 @@ if __name__ == '__main__':
 
 
         # 테스트!!!
-        player1 = player(screen, username, 0, 200, 0)
-        player2 = player(screen, 'dimen', 1, 200, 0)
-        player3 = player(screen, '수령', 2, 200, 0)
-        player4 = player(screen, '황냥이', 3, 200, 0)
+        player1 = player(screen, username, 0, 200, {
+    "빨간 벽돌": 6,
+    "파란 벽돌": 1,
+    "나무 합판": 3,
+    "철근": 2,
+    "시멘트": 3,
+    "수령님의 평양냉면": 1,
+    "멸종위기동물 황새": 1
+})
+        player2 = player(screen, 'dimen', 1, 200, {'철근': 2})
+        player3 = player(screen, '수령', 2, 200, {'빨간 벽돌': 2, '철근': 1})
+        player4 = player(screen, '황냥이', 3, 200, {})
         player1.info()
         player2.info()
         player3.info()
