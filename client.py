@@ -75,7 +75,6 @@ def callGUI():
     # 화면 설정
     window_deco(screen)
     sleep(2)
-   
 
     for client_name in client_list:
         new_client = Client(client_name)
@@ -226,23 +225,23 @@ callGUI()
 print("Started!")
 
 
-while True:
-    try:
-        data = input('>')
-    except KeyboardInterrupt:
-        break
+# while True:
+#     try:
+#         data = input('>')
+#     except KeyboardInterrupt:
+#         break
 
-    if data == '!quit' or '':
-        break
-    elif data == 'CALL':
-        mysock.send(bytes(data, 'utf-8'))
-    elif data.split()[0] == "request":
-        product, price = input("어떤걸, 얼마에?").split()
-        msg = "request:{0}:{1}:{2}:NULL".format(username, product, price)
-        mysock.send(bytes(msg, 'utf-8'))
-    else:
-        print("To Bid, enter 'CALL'")
-        continue
+#     if data == '!quit' or '':
+#         break
+#     elif data == 'CALL':
+#         mysock.send(bytes(data, 'utf-8'))
+#     elif data.split()[0] == "request":
+#         product, price = input("어떤걸, 얼마에?").split()
+#         msg = "request:{0}:{1}:{2}:NULL".format(username, product, price)
+#         mysock.send(bytes(msg, 'utf-8'))
+#     else:
+#         print("To Bid, enter 'CALL'")
+#         continue
 
 # 메시지 전송 및 판단
 # 서버 접속 종료
