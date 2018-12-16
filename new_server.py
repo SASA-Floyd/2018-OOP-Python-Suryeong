@@ -154,7 +154,7 @@ class client(threading.Thread):
                 if is_receiving is False:
                     continue
                 if self.is_bankrupt is True:
-                    self.send("당신은 파산했습니다!")
+                    self.send("@당신은 파산했습니다!")
                     continue
 
             except:
@@ -389,8 +389,9 @@ def main():
     winner_list = existsWinner(win_dict)
 
     for winner in winner_list:
-        sendMessage(client_list, "{} won the game!!".format(
+        sendMessage(client_list, "@{} won the game!!".format(
             winner.nickname))
+        sendMessage(client_list, "v{}".format(winner.nickname))
 
 
 if __name__ == '__main__':
