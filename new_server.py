@@ -311,7 +311,7 @@ def auctionTime(win_dict):
     #     client.join()
 
     print("{} won {}".format(highest_bidder, rand_item))
-    sendMessage(client_list, "w {} won {}".format(
+    sendMessage(client_list, "w:{}:won:{}".format(
         highest_bidder.nickname, rand_item))
     sleep(0.1)
     sendMessage(client_list, "@{} won {}".format(
