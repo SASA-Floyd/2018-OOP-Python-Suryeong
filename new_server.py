@@ -9,7 +9,7 @@ import pickle
 SERVER_IP = 'localhost'
 SERVER_PORT = 50000
 SERVER_ADDRESS = (SERVER_IP, SERVER_PORT)
-NUMBER_OF_PLAYER = 2
+NUMBER_OF_PLAYER = 4
 
 # 3초세는거 하기 위한 전역변수
 current_keeper = 0
@@ -300,8 +300,7 @@ def auctionTime(win_dict):
         client = copy.copy(client)
 
     rand_item = randomSelect()
-    sendMessage(client_list, '''@This round's item is \n{}\n
-                                Bidding Starts Now!!'''.format(rand_item))
+    sendMessage(client_list, '@This rounds item is \n{}\n'.format(rand_item))
     # sleep(3)
     # sendMessage(client_list, "@Bidding Starts Now!")
 
@@ -318,6 +317,7 @@ def auctionTime(win_dict):
     sleep(0.1)
     sendMessage(client_list, "@{} won {}".format(
         highest_bidder.nickname, rand_item))
+    sleep(1)
     highest_bidder.update(rand_item, 10 * call_count)
     informMoney(client_list)
 
@@ -404,5 +404,5 @@ def main():
 
 
 if __name__ == '__main__':
-    while True:
-        main()
+    # while True:
+    main()

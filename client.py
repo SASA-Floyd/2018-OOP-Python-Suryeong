@@ -75,8 +75,7 @@ def callGUI():
     # 화면 설정
     window_deco(screen)
     sleep(2)
-    client_list.append('수령')
-    client_list.append('황냥이')
+   
 
     for client_name in client_list:
         new_client = Client(client_name)
@@ -100,8 +99,8 @@ def callGUI():
 
         player1 = player(screen, client_list[0], 0, 200, {})
         player2 = player(screen, client_list[1], 1, 200, {})
-        player3 = player(screen, '수령', 2, 200, {})
-        player4 = player(screen, '황냥이', 3, 200, {})
+        player3 = player(screen, client_list[2], 2, 200, {})
+        player4 = player(screen, client_list[3], 3, 200, {})
         player_list = [player1, player2, player3, player4]
 
         for i in range(4):
