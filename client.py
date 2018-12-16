@@ -95,7 +95,7 @@ def callGUI():
         # player1 = player(screen, username, 0, 200, 0)
         # player2 = player(screen, 'dimen', 1, 200, 0)
         display_price(screen, current_price)
-        messege(screen, display_message)
+        message(screen, display_message)
 
         player1 = player(screen, client_list[0], 0, 200, {})
         player2 = player(screen, client_list[1], 1, 200, {})
@@ -202,7 +202,6 @@ def receive():
             break
 
     mysock.close()
-
 
 
 # 메시지를 수신할 스레드 생성 및 실행

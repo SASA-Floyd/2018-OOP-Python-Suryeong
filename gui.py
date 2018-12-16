@@ -3,6 +3,7 @@ import pygame
 from pygame.locals import *
 import sys
 import pygame_textinput
+import time
 
 # pygame 초기화
 pygame.init()
@@ -42,7 +43,7 @@ def window():
 
 def waiting_player(screen):
     screen.fill(BLACK)
-    font = pygame.font.Font('fonts\\aJJinbbangB.ttf', 20)
+    font = pygame.font.Font('fonts\\aJJinbbangB.ttf', 25)
     text = font.render('다른 플레이어를 기다리는 중 . . .', True, WHITE, None)
     textRect = text.get_rect()
     textRect.center = (500, 300)
@@ -332,18 +333,29 @@ def crown_for_winner(screen, turn):
 # 전체 공지 칠판에 띄우기
 
 
-def messege(screen, text):
-    textlist = []
-    pygame.draw.rect(screen, GREEN, [40, 90, 490, 150])
-    if len(text) > 25:
-        textlist.append(text[0:25])
-        textlist.append(text[25:])
-    font6 = pygame.font.Font("fonts\\aJJinbbangB.ttf", 25)
-    for i in textlist:
-        showtext = font6.render(str(i), True, WHITE, None)
-        showtextRect = showtext.get_rect()
-        showtextRect.midleft = (50, 120 + 30 * textlist.index(i))
-        screen.blit(showtext, showtextRect)
+old_text = ""
+
+
+def message(screen, text):
+    global old_text
+    if text != old_text:
+        pygame.draw.rect(screen, GREEN, [90, 140, 440, 100])
+    font = pygame.font.Font("fonts\\aJJinbbangB.ttf", 22)
+    textsurface = font.render(text, True, (255, 255, 255))
+    screen.blit(textsurface, (90, 140))
+
+    pass
+    # textlist = []
+    # pygame.draw.rect(screen, GREEN, [40, 90, 490, 150])
+    # if len(text) > 25:
+    #     textlist.append(text[0:25])
+    #     textlist.append(text[25:])
+    # font6 = pygame.font.Font("fonts\\aJJinbbangB.ttf", 25)
+    # for i in textlist:
+    #     showtext = font6.render(str(i), True, WHITE, None)
+    #     showtextRect = showtext.get_rect()
+    #     showtextRect.midleft = (50, 120 + 30 * textlist.index(i))
+    #     screen.blit(showtext, showtextRect)
 
 
 if __name__ == '__main__':
