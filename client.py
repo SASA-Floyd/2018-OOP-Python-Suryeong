@@ -20,6 +20,7 @@ START_MONEY = 300
 
 current_time = 5
 current_price = 0
+display_message = ''
 
 # 소켓을 이용해서 서버에 접속
 mysock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -72,7 +73,7 @@ def callGUI():
     callcnt = 0
     # 화면 설정
     window_deco(screen)
-    sleep(2)
+    sleep(1)
     client_list.append('수령')
     client_list.append('황냥이')
 
@@ -94,6 +95,7 @@ def callGUI():
         # player1 = player(screen, username, 0, 200, 0)
         # player2 = player(screen, 'dimen', 1, 200, 0)
         display_price(screen, current_price)
+        messege(screen, display_message)
 
         player1 = player(screen, client_list[0], 0, 200, {})
         player2 = player(screen, client_list[1], 1, 200, {})
@@ -112,7 +114,7 @@ def callGUI():
         player2.info()
         player3.info()
         player4.info()
-        
+
         for i in range(4):
             c = class_list[i]
             player_list[i].take_my_money(c.money)
@@ -137,6 +139,7 @@ def receive():
     global mysock
     global current_time
     global current_price
+    global display_message
 
     while True:
         try:
@@ -160,6 +163,11 @@ def receive():
 
                 elif data.startswith('b'):
                     current_price += 10
+
+                elif data.startswith('@'):
+                    print("====================")
+                    print(display_message)
+                    display_message = data[1:]
 
                 elif(data == 'player_number'):
                     global player_no

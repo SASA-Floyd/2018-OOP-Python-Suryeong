@@ -297,10 +297,11 @@ def auctionTime(win_dict):
         client = copy.copy(client)
 
     rand_item = randomSelect()
-    sendMessage(client_list, "This round's item is {}\n".format(rand_item))
-    sendMessage(client_list, "Bidding Starts...")
+    sendMessage(client_list, "@This round's item is {}\n".format(rand_item))
+    sleep(0.1)
+    sendMessage(client_list, "@Bidding Starts...")
     sleep(1)
-    sendMessage(client_list, "now!")
+    sendMessage(client_list, "@now!")
 
     flag = threading.Thread(target=flagkeeper)
     flag.start()
@@ -309,8 +310,11 @@ def auctionTime(win_dict):
     # for client in client_list:
     #     client.join()
 
-    print("w {} won {}".format(highest_bidder, rand_item))
+    print("{} won {}".format(highest_bidder, rand_item))
     sendMessage(client_list, "w {} won {}".format(
+        highest_bidder.nickname, rand_item))
+    sleep(0.1)
+    sendMessage(client_list, "@{} won {}".format(
         highest_bidder.nickname, rand_item))
     highest_bidder.update(rand_item, 10 * call_count)
     informMoney(client_list)
