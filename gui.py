@@ -109,13 +109,6 @@ def nickname(screen):
         clock.tick(30)
 
 
-def display_price(screen, price):
-
-    pygame.draw.rect(screen, WHITE, [410, 495, 200, 50], 4)
-    font = pygame.font.Font('fonts\\aJJinbbangB.ttf', 18)
-    text = font.render('가격: ' + str(price), True, WHITE, None)
-    screen.blit(text, [420, 510])
-
 # 플레이 화면 구성
 
 
@@ -302,10 +295,10 @@ def call_button(screen):
     pygame.display.update()
 
 # 보유금액 보여줌
-def show_money(screen, money):
+def display_price(screen, price):
     pygame.draw.rect(screen, BLACK, [455, 500, 140, 40])
     font5 = pygame.font.Font("fonts\\aJJinbbangB.ttf", 25)
-    text = font5.render(str(money), True, WHITE, None)
+    text = font5.render(str(price), True, WHITE, None)
     textRect = text.get_rect()
     textRect.midright = (600, 520)
     screen.blit(text, textRect)
@@ -382,12 +375,12 @@ if __name__ == '__main__':
         player2.info()
         player3.info()
         player4.info()
-        player1.take_my_money(callcnt*10)
+        player1.take_my_money(10)
         player3.take_my_money(30)
         player2.take_my_money(10)
         player4.take_my_money(40)
 
-        show_money(screen, 200)
+        show_money(screen, 200+callcnt*10)
 
         crown_for_winner(screen, 3)
 
