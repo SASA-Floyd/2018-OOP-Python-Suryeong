@@ -175,6 +175,7 @@ def receive():
 
                 elif(data == 'end'):
                     mysock.send(bytes("end", 'UTF-8'))
+                    current_price = 0
 
                 elif(data == 'start_game'):
                     global game_started
