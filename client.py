@@ -164,7 +164,7 @@ def receive():
                 elif data.startswith('b'):
                     current_price += 10
 
-                elif data.startswith('v'):
+                # elif data.startswith('v'):
                     
 
                 elif data.startswith('@'):
