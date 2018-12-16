@@ -399,6 +399,7 @@ def main():
     for winner in winner_list:
         sendMessage(client_list, "@{} won the game!!".format(
             winner.nickname))
+        sleep(0.1)
         sendMessage(client_list, "v{}".format(winner.turn))
 
 
