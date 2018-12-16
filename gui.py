@@ -328,7 +328,7 @@ def display_price(screen, price):
 
 def crown_for_winner(screen, turn):
     crown = pygame.image.load("images\\crown.png")
-    screen.blit(crown, (35 + 157 * turn, 260))
+    screen.blit(crown, (35 + 157 * turn, 150))
 
 # 전체 공지 칠판에 띄우기
 
@@ -339,7 +339,7 @@ old_text = ""
 def message(screen, text):
     global old_text
     if text != old_text:
-        pygame.draw.rect(screen, GREEN, [90, 140, 440, 100])
+        pygame.draw.rect(screen, GREEN, [90, 140, 440, 70])
     font = pygame.font.Font("fonts\\aJJinbbangB.ttf", 22)
     textsurface = font.render(text, True, (255, 255, 255))
     screen.blit(textsurface, (90, 140))
