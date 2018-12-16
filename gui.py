@@ -183,7 +183,7 @@ class player:
             j = 0
             while j < value:
                 if cnt+j >= 10:
-                    self.screen.blit(r, (695 + (cnt+j-10)*25 + 25*j, 165 + 120 * self.turn))
+                    self.screen.blit(r, (695 + (cnt+j-10)*25, 165 + 120 * self.turn))
                 else:
                     self.screen.blit(r, (695 + (cnt+j)*25, 140 + 120 * self.turn))
                 j += 1
@@ -193,7 +193,7 @@ class player:
             j = 0
             while j < value:
                 if cnt+j >= 10:
-                    self.screen.blit(b, (695 + (cnt+j-10)*25 + 25*j, 165 + 120 * self.turn))
+                    self.screen.blit(b, (695 + (cnt+j-10)*25, 165 + 120 * self.turn))
                 else:
                     self.screen.blit(b, (695 + (cnt+j)*25, 140 + 120 * self.turn))
                 j += 1
@@ -203,7 +203,7 @@ class player:
             j = 0
             while j < value:
                 if cnt+j >= 10:
-                    self.screen.blit(w, (695 + (cnt+j-10)*25 + 25*j, 165 + 120 * self.turn))
+                    self.screen.blit(w, (695 + (cnt+j-10)*25, 165 + 120 * self.turn))
                 else:
                     self.screen.blit(w, (695 + (cnt+j)*25, 140 + 120 * self.turn))
                 j += 1
@@ -213,7 +213,7 @@ class player:
             j = 0
             while j < value:
                 if cnt+j >= 10:
-                    self.screen.blit(i, (695 + (cnt+j-10)*25 + 25*j, 165 + 120 * self.turn))
+                    self.screen.blit(i, (695 + (cnt+j-10)*25, 165 + 120 * self.turn))
                 else:
                     self.screen.blit(i, (695 + (cnt+j)*25, 140 + 120 * self.turn))
                 j += 1
@@ -223,7 +223,7 @@ class player:
             j = 0
             while j < value:
                 if cnt+j >= 10:
-                    self.screen.blit(c, (695 + (cnt+j-10)*25 + 25*j, 165 + 120 * self.turn))
+                    self.screen.blit(c, (695 + (cnt+j-10)*25, 165 + 120 * self.turn))
                 else:
                     self.screen.blit(c, (695 + (cnt+j)*25, 140 + 120 * self.turn))
                 j += 1
@@ -233,7 +233,7 @@ class player:
             j = 0
             while j < value:
                 if cnt+j >= 10:
-                    self.screen.blit(s, (695 + (cnt+j-10)*25 + 25*j, 165 + 120 * self.turn))
+                    self.screen.blit(s, (695 + (cnt+j-10)*25, 165 + 120 * self.turn))
                 else:
                     self.screen.blit(s, (695 + (cnt+j)*25, 140 + 120 * self.turn))
                 j += 1
@@ -243,7 +243,7 @@ class player:
             j = 0
             while j < value:
                 if cnt+j >= 10:
-                    self.screen.blit(h, (695 + (cnt+j-10)*25 + 25*j, 165 + 120 * self.turn))
+                    self.screen.blit(h, (695 + (cnt+j-10)*25, 165 + 120 * self.turn))
                 else:
                     self.screen.blit(h, (695 + (cnt+j)*25, 140 + 120 * self.turn))
                 j += 1
@@ -371,7 +371,7 @@ if __name__ == '__main__':
     "파란 벽돌": 1,
     "나무 합판": 3,
     "철근": 2,
-    "시멘트": 3,
+    "시멘트": 4,
     "수령님의 평양냉면": 1,
     "멸종위기동물 황새": 1
 })
@@ -388,7 +388,6 @@ if __name__ == '__main__':
         player4.take_my_money(40)
 
         show_money(screen, 200)
-
 
         crown_for_winner(screen, 3)
 
