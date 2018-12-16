@@ -55,7 +55,8 @@ time, socket, pygame, threading
 - random
 - copy
 
-## 10. 기타
+## 10. 기타   
+왠지 모르겠지만 최정담 계정이 dimenerno와 Dimen으로 나누어져 있으므로 성실도 평가할 때 유의해주세요!
 
 <hr>
 
