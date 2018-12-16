@@ -32,12 +32,15 @@ class Client:
 
         self.name = name
         self.money = START_MONEY
-        self.item_list = []
+        self.item_list = {}
 
     def update(self, item, price):
 
         self.money -= price
-        self.item_list.append(item)
+        if item in self.item_list:
+            self.item_list[item] += 1
+        else:
+            self.item_list.setdefault(item, 1)
 
 
 def callGUI():
@@ -90,12 +93,12 @@ def callGUI():
         # 테스트!!!
         # player1 = player(screen, username, 0, 200, 0)
         # player2 = player(screen, 'dimen', 1, 200, 0)
-        display_price(screen,current_price)
+        display_price(screen, current_price)
 
-        player1 = player(screen, client_list[0], 0, 200, 0)
-        player2 = player(screen, client_list[1], 1, 200, 0)
-        player3 = player(screen, '수령', 2, 200, 0)
-        player4 = player(screen, '황냥이', 3, 200, 0)
+        player1 = player(screen, client_list[0], 0, 200, {})
+        player2 = player(screen, client_list[1], 1, 200, {})
+        player3 = player(screen, '수령', 2, 200, {})
+        player4 = player(screen, '황냥이', 3, 200, {})
         player_list = [player1, player2, player3, player4]
 
         player1.info()
@@ -109,6 +112,7 @@ def callGUI():
         for i in range(4):
             c = class_list[i]
             player_list[i].take_my_money(c.money)
+            player_list[i].item = c.item_list
             # ** 금액 입력받는 부분 만들어야함 **
         call = call_button(screen)
         if call == 'CALL':
