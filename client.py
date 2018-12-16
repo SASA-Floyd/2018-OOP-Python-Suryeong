@@ -160,12 +160,12 @@ def receive():
                     for player in class_list:
                         if player.name == person:
                             player.update(item, current_price)
+                    current_price = 0
 
                 elif data.startswith('b'):
                     current_price += 10
 
                 # elif data.startswith('v'):
-                    
 
                 elif data.startswith('@'):
                     print("====================")
@@ -178,7 +178,7 @@ def receive():
 
                 elif(data == 'end'):
                     mysock.send(bytes("end", 'UTF-8'))
-                    current_price = 0
+                    # current_price = 0
 
                 elif(data == 'start_game'):
                     global game_started
