@@ -109,13 +109,6 @@ def nickname(screen):
         clock.tick(30)
 
 
-def display_price(screen, price):
-
-    pygame.draw.rect(screen, WHITE, [410, 495, 200, 50], 4)
-    font = pygame.font.Font('fonts\\aJJinbbangB.ttf', 18)
-    text = font.render('가격: ' + str(price), True, WHITE, None)
-    screen.blit(text, [420, 510])
-
 # 플레이 화면 구성
 
 
@@ -184,7 +177,7 @@ class player:
             while j < value:
                 if cnt+j >= 10:
                     self.screen.blit(
-                        r, (695 + (cnt+j-10)*25 + 25*j, 165 + 120 * self.turn))
+                        r, (695 + (cnt+j-10)*25, 165 + 120 * self.turn))
                 else:
                     self.screen.blit(
                         r, (695 + (cnt+j)*25, 140 + 120 * self.turn))
@@ -196,7 +189,7 @@ class player:
             while j < value:
                 if cnt+j >= 10:
                     self.screen.blit(
-                        b, (695 + (cnt+j-10)*25 + 25*j, 165 + 120 * self.turn))
+                        b, (695 + (cnt+j-10)*25, 165 + 120 * self.turn))
                 else:
                     self.screen.blit(
                         b, (695 + (cnt+j)*25, 140 + 120 * self.turn))
@@ -208,7 +201,7 @@ class player:
             while j < value:
                 if cnt+j >= 10:
                     self.screen.blit(
-                        w, (695 + (cnt+j-10)*25 + 25*j, 165 + 120 * self.turn))
+                        w, (695 + (cnt+j-10)*25, 165 + 120 * self.turn))
                 else:
                     self.screen.blit(
                         w, (695 + (cnt+j)*25, 140 + 120 * self.turn))
@@ -220,7 +213,7 @@ class player:
             while j < value:
                 if cnt+j >= 10:
                     self.screen.blit(
-                        i, (695 + (cnt+j-10)*25 + 25*j, 165 + 120 * self.turn))
+                        i, (695 + (cnt+j-10)*25, 165 + 120 * self.turn))
                 else:
                     self.screen.blit(
                         i, (695 + (cnt+j)*25, 140 + 120 * self.turn))
@@ -232,7 +225,7 @@ class player:
             while j < value:
                 if cnt+j >= 10:
                     self.screen.blit(
-                        c, (695 + (cnt+j-10)*25 + 25*j, 165 + 120 * self.turn))
+                        c, (695 + (cnt+j-10)*25, 165 + 120 * self.turn))
                 else:
                     self.screen.blit(
                         c, (695 + (cnt+j)*25, 140 + 120 * self.turn))
@@ -244,7 +237,7 @@ class player:
             while j < value:
                 if cnt+j >= 10:
                     self.screen.blit(
-                        s, (695 + (cnt+j-10)*25 + 25*j, 165 + 120 * self.turn))
+                        s, (695 + (cnt+j-10)*25, 165 + 120 * self.turn))
                 else:
                     self.screen.blit(
                         s, (695 + (cnt+j)*25, 140 + 120 * self.turn))
@@ -256,7 +249,7 @@ class player:
             while j < value:
                 if cnt+j >= 10:
                     self.screen.blit(
-                        h, (695 + (cnt+j-10)*25 + 25*j, 165 + 120 * self.turn))
+                        h, (695 + (cnt+j-10)*25, 165 + 120 * self.turn))
                 else:
                     self.screen.blit(
                         h, (695 + (cnt+j)*25, 140 + 120 * self.turn))
@@ -319,20 +312,26 @@ def call_button(screen):
     pygame.display.update()
 
 # 보유금액 보여줌
-def show_money(screen, money):
+
+
+def display_price(screen, price):
     pygame.draw.rect(screen, BLACK, [455, 500, 140, 40])
     font5 = pygame.font.Font("fonts\\aJJinbbangB.ttf", 25)
-    text = font5.render(str(money), True, WHITE, None)
+    text = font5.render(str(price), True, WHITE, None)
     textRect = text.get_rect()
     textRect.midright = (600, 520)
     screen.blit(text, textRect)
 
 # 우승자 티내기
+
+
 def crown_for_winner(screen, turn):
     crown = pygame.image.load("images\\crown.png")
     screen.blit(crown, (35 + 157 * turn, 260))
 
 # 전체 공지 칠판에 띄우기
+
+
 def messege(screen, text):
     textlist = []
     pygame.draw.rect(screen, GREEN, [40, 90, 490, 150])
@@ -388,7 +387,7 @@ if __name__ == '__main__':
             "파란 벽돌": 1,
             "나무 합판": 3,
             "철근": 2,
-            "시멘트": 3,
+            "시멘트": 4,
             "수령님의 평양냉면": 1,
             "멸종위기동물 황새": 1
         })
@@ -399,13 +398,12 @@ if __name__ == '__main__':
         player2.info()
         player3.info()
         player4.info()
-        player1.take_my_money(callcnt*10)
+        player1.take_my_money(10)
         player3.take_my_money(30)
         player2.take_my_money(10)
         player4.take_my_money(40)
 
-        show_money(screen, 200)
-
+        show_money(screen, 200+callcnt*10)
 
         crown_for_winner(screen, 3)
 
